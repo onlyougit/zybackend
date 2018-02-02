@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rttmall.shopbackend.app.customer.mapper.CustomerMapper">
+  <resultMap id="BaseResultMap" type="com.rttmall.shopbackend.app.customer.pojo.Customer">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="customer_phone" jdbcType="VARCHAR" property="customerPhone" />
+    <result column="customer_name" jdbcType="VARCHAR" property="customerName" />
+    <result column="customer_password" jdbcType="VARCHAR" property="customerPassword" />
+    <result column="customer_real_name" jdbcType="VARCHAR" property="customerRealName" />
+    <result column="customer_card_id" jdbcType="VARCHAR" property="customerCardId" />
+    <result column="regist_time" jdbcType="TIMESTAMP" property="registTime" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="safe" jdbcType="VARCHAR" property="safe" />
+    <result column="agent_id" jdbcType="INTEGER" property="agentId" />
+    <result column="business_id" jdbcType="INTEGER" property="businessId" />
+    <result column="editor" jdbcType="INTEGER" property="editor" />
+    <result column="edit_time" jdbcType="TIMESTAMP" property="editTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, customer_phone, customer_name, customer_password, customer_real_name, customer_card_id, 
+    regist_time, status, safe, agent_id, business_id, editor, edit_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_customer
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_customer
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.rttmall.shopbackend.app.customer.pojo.Customer">
+    insert into t_customer (id, customer_phone, customer_name, 
+      customer_password, customer_real_name, customer_card_id, 
+      regist_time, status, safe, 
+      agent_id, business_id, editor, 
+      edit_time)
+    values (#{id,jdbcType=INTEGER}, #{customerPhone,jdbcType=VARCHAR}, #{customerName,jdbcType=VARCHAR}, 
+      #{customerPassword,jdbcType=VARCHAR}, #{customerRealName,jdbcType=VARCHAR}, #{customerCardId,jdbcType=VARCHAR}, 
+      #{registTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, #{safe,jdbcType=VARCHAR}, 
+      #{agentId,jdbcType=INTEGER}, #{businessId,jdbcType=INTEGER}, #{editor,jdbcType=INTEGER}, 
+      #{editTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.rttmall.shopbackend.app.customer.pojo.Customer">
+    insert into t_customer
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="customerPhone != null">
+        customer_phone,
+      </if>
+      <if test="customerName != null">
+        customer_name,
+      </if>
+      <if test="customerPassword != null">
+        customer_password,
+      </if>
+      <if test="customerRealName != null">
+        customer_real_name,
+      </if>
+      <if test="customerCardId != null">
+        customer_card_id,
+      </if>
+      <if test="registTime != null">
+        regist_time,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="safe != null">
+        safe,
+      </if>
+      <if test="agentId != null">
+        agent_id,
+      </if>
+      <if test="businessId != null">
+        business_id,
+      </if>
+      <if test="editor != null">
+        editor,
+      </if>
+      <if test="editTime != null">
+        edit_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="customerPhone != null">
+        #{customerPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="customerName != null">
+        #{customerName,jdbcType=VARCHAR},
+      </if>
+      <if test="customerPassword != null">
+        #{customerPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="customerRealName != null">
+        #{customerRealName,jdbcType=VARCHAR},
+      </if>
+      <if test="customerCardId != null">
+        #{customerCardId,jdbcType=VARCHAR},
+      </if>
+      <if test="registTime != null">
+        #{registTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="safe != null">
+        #{safe,jdbcType=VARCHAR},
+      </if>
+      <if test="agentId != null">
+        #{agentId,jdbcType=INTEGER},
+      </if>
+      <if test="businessId != null">
+        #{businessId,jdbcType=INTEGER},
+      </if>
+      <if test="editor != null">
+        #{editor,jdbcType=INTEGER},
+      </if>
+      <if test="editTime != null">
+        #{editTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.rttmall.shopbackend.app.customer.pojo.Customer">
+    update t_customer
+    <set>
+      <if test="customerPhone != null">
+        customer_phone = #{customerPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="customerName != null">
+        customer_name = #{customerName,jdbcType=VARCHAR},
+      </if>
+      <if test="customerPassword != null">
+        customer_password = #{customerPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="customerRealName != null">
+        customer_real_name = #{customerRealName,jdbcType=VARCHAR},
+      </if>
+      <if test="customerCardId != null">
+        customer_card_id = #{customerCardId,jdbcType=VARCHAR},
+      </if>
+      <if test="registTime != null">
+        regist_time = #{registTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="safe != null">
+        safe = #{safe,jdbcType=VARCHAR},
+      </if>
+      <if test="agentId != null">
+        agent_id = #{agentId,jdbcType=INTEGER},
+      </if>
+      <if test="businessId != null">
+        business_id = #{businessId,jdbcType=INTEGER},
+      </if>
+      <if test="editor != null">
+        editor = #{editor,jdbcType=INTEGER},
+      </if>
+      <if test="editTime != null">
+        edit_time = #{editTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.rttmall.shopbackend.app.customer.pojo.Customer">
+    update t_customer
+    set customer_phone = #{customerPhone,jdbcType=VARCHAR},
+      customer_name = #{customerName,jdbcType=VARCHAR},
+      customer_password = #{customerPassword,jdbcType=VARCHAR},
+      customer_real_name = #{customerRealName,jdbcType=VARCHAR},
+      customer_card_id = #{customerCardId,jdbcType=VARCHAR},
+      regist_time = #{registTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=INTEGER},
+      safe = #{safe,jdbcType=VARCHAR},
+      agent_id = #{agentId,jdbcType=INTEGER},
+      business_id = #{businessId,jdbcType=INTEGER},
+      editor = #{editor,jdbcType=INTEGER},
+      edit_time = #{editTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

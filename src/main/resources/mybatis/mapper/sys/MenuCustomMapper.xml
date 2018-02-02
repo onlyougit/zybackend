@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rttmall.shopbackend.sys.mapper.MenuCustomMapper">
+    <resultMap id="BaseResultMap" type="com.rttmall.shopbackend.sys.pojo.MenuCustom">
+        <id column="menu_id" jdbcType="VARCHAR" property="menuId"/>
+        <result column="menu_name" jdbcType="VARCHAR" property="menuName"/>
+        <result column="menu_parent_id" jdbcType="VARCHAR" property="menuParentId"/>
+        <result column="menu_url" jdbcType="VARCHAR" property="menuUrl"/>
+        <result column="icon_class" jdbcType="VARCHAR" property="iconClass"/>
+        <result column="icon_position" jdbcType="VARCHAR" property="iconPosition"/>
+        <result column="menu_seq" jdbcType="INTEGER" property="menuSeq"/>
+    </resultMap>
+    <resultMap id="SecondResultMap" type="com.rttmall.shopbackend.sys.pojo.MenuCustom">
+        <id column="menu_parent_id" jdbcType="VARCHAR" property="menuId"/>
+        <result column="menu_parent_name" jdbcType="VARCHAR" property="menuName"/>
+        <collection property="children" ofType="MenuCustom">
+            <id column="menu_id" jdbcType="VARCHAR" property="menuId"/>
+            <result column="menu_name" jdbcType="VARCHAR" property="menuName"/>
+        </collection>
+    </resultMap>
+    <resultMap id="ThirdResultMap" type="com.rttmall.shopbackend.sys.pojo.MenuCustom">
+        <id column="menu_id" jdbcType="VARCHAR" property="id"/>
+        <result column="menu_name" jdbcType="VARCHAR" property="text"/>
+        <result column="menu_parent_id" jdbcType="VARCHAR" property="pid"/>
+        <result column="menu_url" jdbcType="VARCHAR" property="url"/>
+        <result column="icon_class" jdbcType="VARCHAR" property="iconCls"/>
+        <result column="icon_position" jdbcType="VARCHAR" property="iconPosition"/>
+        <result column="menu_seq" jdbcType="INTEGER" property="menuSeq"/>
+    </resultMap>
+    <resultMap id="ForthResultMap" type="MenuCustom" extends="BaseResultMap">
+        <result column="menu_parent_name" jdbcType="VARCHAR" property="menuParentName"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    menu_id, menu_name, menu_parent_id, menu_url, icon_class, icon_position, menu_seq
+  </sql>
+    <sql id="query_menu_where">
+        <if test="menuName!=null and menuName!=''">
+            t1.menu_name LIKE concat('%',#{menuName},'%')
+        </if>
+        <if test="menuParentId!=null and menuParentId!=''">
+            and t1.menu_parent_id= '${menuParentId}'
+        </if>
+    </sql>
+    <select id="isExistChildMenu" parameterType="java.util.List" resultType="Integer">
+        SELECT count(*)
+        FROM t_sys_menu
+        WHERE menu_parent_id in
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </select>
+    <select id="getLeftMenuTree" parameterType="java.lang.Integer" resultMap="ThirdResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        from t_sys_menu A where A.menu_id in(
+        select * from (
+
+        select DISTINCT(A.menu_parent_id) from t_sys_menu A where A.menu_parent_id is not null and A.menu_id in
+        (
+        select * from (
+        select distinct(A.permission_id) from t_sys_role_permission A,t_sys_menu B where role_id
+        in(
+        select role_id from t_sys_user_role where user_id=#{value}
+        ) and A.permission_id =B.menu_id
+        UNION
+        select B.menu_id from t_sys_role_permission A,t_sys_permission B where A.permission_id =B.permission_id
+        and A.role_id in (
+        select role_id from t_sys_user_role where user_id=#{value}
+        )) as t1
+        )
+        union
+        select * from (
+        select distinct(A.permission_id) from t_sys_role_permission A,t_sys_menu B where role_id
+        in(
+        select role_id from t_sys_user_role where user_id=#{value}
+        ) and A.permission_id =B.menu_id
+        UNION
+        select B.menu_id from t_sys_role_permission A,t_sys_permission B where A.permission_id =B.permission_id
+        and A.role_id in (
+        select role_id from t_sys_user_role where user_id=#{value}
+        ))as t2
+
+        )as t3)order by A.menu_seq
+    </select>
+    <select id="selectAllMenu" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_sys_menu
+    </select>
+    <select id="getMenuTree" resultMap="SecondResultMap">
+    SELECT
+    t1.menu_id,t1.menu_name,t1.menu_seq,t2.menu_parent_id,t2.menu_parent_name
+    from t_sys_menu t1,
+    (
+    SELECT menu_id as menu_parent_id,menu_name as menu_parent_name
+    from t_sys_menu
+    WHERE menu_parent_id is null or menu_parent_id=''
+    )t2
+    WHERE t1.menu_parent_id=t2.menu_parent_id
+    order by menu_seq ASC
+  </select>
+    <select id="isExistRolePermission" parameterType="java.util.List" resultType="Integer">
+        SELECT count(*)
+        FROM t_sys_role_permission rolePer,t_sys_permission per
+        WHERE rolePer.permission_id=per.permission_id AND menu_id in
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </select>
+    <select id="isExistUpdateMenu" parameterType="Menu" resultType="Integer">
+    SELECT count(1) FROM t_sys_menu WHERE menu_name=#{menuName} AND menu_id!=#{menuId}
+  </select>
+    <select id="isExistMenu" parameterType="String" resultType="Integer">
+    SELECT count(1) FROM t_sys_menu WHERE menu_name=#{value}
+  </select>
+    <select id="queryParentMenu" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_sys_menu
+        WHERE menu_parent_id IS NULL OR menu_parent_id=''
+    </select>
+    <select id="queryMenu" parameterType="MenuCustom" resultMap="ForthResultMap">
+        SELECT
+        t1.menu_id,t1.menu_name,t1.menu_parent_id,t1.menu_url,t1.icon_class,t1.icon_position,t1.menu_seq,t2.menu_name
+        menu_parent_name from t_sys_menu t1 LEFT JOIN (
+        SELECT menu_id,menu_name from t_sys_menu
+        where menu_parent_id is null or menu_parent_id=''
+        )t2
+        ON t1.menu_parent_id=t2.menu_id
+        <where>
+            <include refid="query_menu_where"></include>
+        </where>
+        ORDER BY menu_id desc
+        limit #{pagination.startIndex},#{pagination.pageSize}
+    </select>
+    <select id="queryMenuCount" parameterType="MenuCustom"
+            resultType="java.lang.Integer">
+        SELECT count(1)
+        from t_sys_menu t1 LEFT JOIN (
+        SELECT menu_id,menu_name from t_sys_menu
+        where menu_parent_id is null or menu_parent_id=''
+        )t2
+        ON t1.menu_parent_id=t2.menu_id
+        <where>
+            <include refid="query_menu_where"></include>
+        </where>
+    </select>
+    <delete id="batchDeletePermission" parameterType="java.util.List">
+        delete from t_sys_permission where menu_id in
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </delete>
+    <delete id="batchDeleteMenu" parameterType="java.util.List">
+        delete from t_sys_menu where menu_id in
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rttmall.shopbackend.app.customer.mapper.FundDetailMapper">
+  <resultMap id="BaseResultMap" type="com.rttmall.shopbackend.app.customer.pojo.FundDetail">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="customer_id" jdbcType="INTEGER" property="customerId" />
+    <result column="flow_way" jdbcType="INTEGER" property="flowWay" />
+    <result column="change_amount" jdbcType="DECIMAL" property="changeAmount" />
+    <result column="charge_amount" jdbcType="DECIMAL" property="chargeAmount" />
+    <result column="change_time" jdbcType="TIMESTAMP" property="changeTime" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, customer_id, flow_way, change_amount, charge_amount, change_time, remark
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_fund_detail
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_fund_detail
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.rttmall.shopbackend.app.customer.pojo.FundDetail">
+    insert into t_fund_detail (id, customer_id, flow_way, 
+      change_amount, charge_amount, change_time, 
+      remark)
+    values (#{id,jdbcType=INTEGER}, #{customerId,jdbcType=INTEGER}, #{flowWay,jdbcType=INTEGER}, 
+      #{changeAmount,jdbcType=DECIMAL}, #{chargeAmount,jdbcType=DECIMAL}, #{changeTime,jdbcType=TIMESTAMP}, 
+      #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.rttmall.shopbackend.app.customer.pojo.FundDetail">
+    insert into t_fund_detail
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="customerId != null">
+        customer_id,
+      </if>
+      <if test="flowWay != null">
+        flow_way,
+      </if>
+      <if test="changeAmount != null">
+        change_amount,
+      </if>
+      <if test="chargeAmount != null">
+        charge_amount,
+      </if>
+      <if test="changeTime != null">
+        change_time,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="customerId != null">
+        #{customerId,jdbcType=INTEGER},
+      </if>
+      <if test="flowWay != null">
+        #{flowWay,jdbcType=INTEGER},
+      </if>
+      <if test="changeAmount != null">
+        #{changeAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="chargeAmount != null">
+        #{chargeAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="changeTime != null">
+        #{changeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.rttmall.shopbackend.app.customer.pojo.FundDetail">
+    update t_fund_detail
+    <set>
+      <if test="customerId != null">
+        customer_id = #{customerId,jdbcType=INTEGER},
+      </if>
+      <if test="flowWay != null">
+        flow_way = #{flowWay,jdbcType=INTEGER},
+      </if>
+      <if test="changeAmount != null">
+        change_amount = #{changeAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="chargeAmount != null">
+        charge_amount = #{chargeAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="changeTime != null">
+        change_time = #{changeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.rttmall.shopbackend.app.customer.pojo.FundDetail">
+    update t_fund_detail
+    set customer_id = #{customerId,jdbcType=INTEGER},
+      flow_way = #{flowWay,jdbcType=INTEGER},
+      change_amount = #{changeAmount,jdbcType=DECIMAL},
+      charge_amount = #{chargeAmount,jdbcType=DECIMAL},
+      change_time = #{changeTime,jdbcType=TIMESTAMP},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

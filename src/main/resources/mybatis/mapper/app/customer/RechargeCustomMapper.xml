@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.rttmall.shopbackend.app.customer.mapper.RechargeCustomMapper">
+	<resultMap id="RechargeResultMap"
+		type="com.rttmall.shopbackend.app.customer.pojo.RechargeCustom">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="customer_id" jdbcType="INTEGER" property="customerId" />
+		<result column="order_id" jdbcType="VARCHAR" property="orderId" />
+		<result column="recharge_amount" jdbcType="DECIMAL" property="rechargeAmount" />
+		<result column="recharge_time" jdbcType="TIMESTAMP" property="rechargeTime" />
+		<result column="recharge_way" jdbcType="INTEGER" property="rechargeWayEnum"
+			typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="remark" jdbcType="VARCHAR" property="remark" />
+		<result column="customer_phone" jdbcType="VARCHAR"
+			property="customer.customerPhone" />
+		<result column="customer_name" jdbcType="VARCHAR" property="customer.customerName" />
+		<result column="customer_real_name" jdbcType="VARCHAR"
+			property="customer.customerRealName" />
+		<result column="business_name" jdbcType="VARCHAR" property="business.businessName" />
+		<result column="agent_name" jdbcType="VARCHAR" property="agent.agentName" />
+		<result column="agent_phone" jdbcType="VARCHAR" property="agent.agentPhone" />
+	</resultMap>
+	<sql id="Recharge_List">
+		r.id, r.customer_id,
+		r.order_id,r.recharge_amount,r.recharge_time,r.recharge_way,r.remark,
+		c.customer_phone, c.customer_name, c.customer_real_name,
+		b.business_name,a.agent_name,a.agent_phone
+	</sql>
+	<sql id="recharge_where">
+		<if test="customer!=null">
+			<if test="customer.customerPhone!=null and customer.customerPhone!=''">
+				and c.customer_phone =#{customer.customerPhone}
+			</if>
+		</if>
+		<if test="customer!=null">
+			<if
+				test="customer.customerRealName!=null and customer.customerRealName!=''">
+				and c.customer_real_name like
+				concat('%',#{customer.customerRealName},'%')
+			</if>
+		</if>
+		<if test="agent!=null">
+			<if test="agent.agentPhone!=null and agent.agentPhone!=''">
+				and a.agent_phone =#{agent.agentPhone}
+			</if>
+		</if>
+		<if test="agent!=null">
+			<if test="agent.agentName!=null and agent.agentName!=''">
+				and a.agent_name like concat('%',#{agent.agentName},'%')
+			</if>
+		</if>
+		<if test="business!=null">
+			<if test="business.businessName!=null and business.businessName!=''">
+				and b.business_name like
+				concat('%',#{business.businessName},'%')
+			</if>
+		</if>
+		<if test="startDateTime!=null">
+			and r.recharge_time &gt;= #{startDateTime}
+		</if>
+		<if test="endDateTime!=null">
+			and r.recharge_time &lt;= #{endDateTime}
+		</if>
+	</sql>
+	<select id="queryRecharge" parameterType="RechargeCustom"
+		resultMap="RechargeResultMap">
+		select
+		<include refid="Recharge_List" />
+		from t_recharge r
+		left join t_customer c on c.id=r.customer_id
+		left join
+		t_business b on b.id=c.business_id
+		left join t_agent a on
+		a.id=c.agent_id
+		<where>
+			<include refid="recharge_where"></include>
+		</where>
+		order by r.id desc
+	</select>
+	<select id="queryRechargeBusiness" parameterType="RechargeCustom"
+		resultMap="RechargeResultMap">
+		select
+		<include refid="Recharge_List" />
+		from t_recharge r
+		left join t_customer c on c.id=r.customer_id
+		left join
+		t_agent a on a.id=c.agent_id
+		,t_business b
+		<where>
+			b.id=c.business_id and b.login_id=#{loginId}
+			<include refid="recharge_where"></include>
+		</where>
+		order by r.id desc
+	</select>
+	<select id="queryRechargeAgent" parameterType="RechargeCustom"
+		resultMap="RechargeResultMap">
+		select
+		<include refid="Recharge_List" />
+		from t_recharge r
+		left join t_customer c on c.id=r.customer_id
+		left join
+		t_business b on b.id=c.business_id
+		,t_agent a
+		<where>
+			a.id=c.agent_id and a.login_id=#{loginId}
+			<include refid="recharge_where"></include>
+		</where>
+		order by r.id desc
+	</select>
+</mapper>

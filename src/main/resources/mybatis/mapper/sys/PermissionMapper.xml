@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rttmall.shopbackend.sys.mapper.PermissionMapper">
+  <resultMap id="BaseResultMap" type="com.rttmall.shopbackend.sys.pojo.Permission">
+    <id column="permission_id" jdbcType="VARCHAR" property="permissionId" />
+    <result column="permission_name" jdbcType="VARCHAR" property="permissionName" />
+    <result column="permission_url" jdbcType="VARCHAR" property="permissionUrl" />
+    <result column="menu_id" jdbcType="VARCHAR" property="menuId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    permission_id, permission_name, permission_url, menu_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_sys_permission
+    where permission_id = #{permissionId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_sys_permission
+    where permission_id = #{permissionId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.rttmall.shopbackend.sys.pojo.Permission">
+    insert into t_sys_permission (permission_id, permission_name, permission_url, 
+      menu_id)
+    values (#{permissionId,jdbcType=VARCHAR}, #{permissionName,jdbcType=VARCHAR}, #{permissionUrl,jdbcType=VARCHAR},
+      #{menuId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.rttmall.shopbackend.sys.pojo.Permission">
+    <selectKey keyProperty="permissionId" resultType="String" order="BEFORE">
+      select replace(uuid(),'-','') from dual
+    </selectKey>
+    insert into t_sys_permission
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="permissionId != null">
+        permission_id,
+      </if>
+      <if test="permissionName != null">
+        permission_name,
+      </if>
+      <if test="permissionUrl != null">
+        permission_url,
+      </if>
+      <if test="menuId != null">
+        menu_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="permissionId != null">
+        #{permissionId,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionName != null">
+        #{permissionName,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionUrl != null">
+        #{permissionUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="menuId != null">
+        #{menuId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.rttmall.shopbackend.sys.pojo.Permission">
+    update t_sys_permission
+    <set>
+      <if test="permissionName != null">
+        permission_name = #{permissionName,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionUrl != null">
+        permission_url = #{permissionUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="menuId != null">
+        menu_id = #{menuId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where permission_id = #{permissionId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.rttmall.shopbackend.sys.pojo.Permission">
+    update t_sys_permission
+    set permission_name = #{permissionName,jdbcType=VARCHAR},
+      permission_url = #{permissionUrl,jdbcType=VARCHAR},
+      menu_id = #{menuId,jdbcType=VARCHAR}
+    where permission_id = #{permissionId,jdbcType=VARCHAR}
+  </update>
+</mapper>

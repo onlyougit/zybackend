@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rttmall.shopbackend.sys.mapper.PermissionCustomMapper">
+    <resultMap id="BaseResultMap" type="com.rttmall.shopbackend.sys.pojo.PermissionCustom">
+        <id column="permission_id" jdbcType="VARCHAR" property="permissionId"/>
+        <result column="permission_name" jdbcType="VARCHAR" property="permissionName"/>
+        <result column="permission_url" jdbcType="VARCHAR" property="permissionUrl"/>
+        <result column="menu_id" jdbcType="VARCHAR" property="menuId"/>
+    </resultMap>
+    <resultMap id="SecondResultMap" type="com.rttmall.shopbackend.sys.pojo.PermissionCustom" extends="BaseResultMap">
+        <result column="menu_name" jdbcType="VARCHAR" property="menuName"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    permission_id, permission_name, permission_url, menu_id
+  </sql>
+    <sql id="Second_Column_List">
+    permission_id, permission_name, permission_url, perm.menu_id,menu.menu_name
+  </sql>
+    <sql id="query_permission_where">
+        <if test="menuId!=null and menuId!=''">
+            perm.menu_id=#{menuId}
+        </if>
+    </sql>
+    <select id="isHavingPermission" parameterType="UserCustom" resultType="java.lang.Integer">
+    SELECT count(*) FROM t_sys_permission WHERE permission_id in(
+SELECT permission_id from t_sys_role_permission WHERE role_id in (
+SELECT role_id FROM t_sys_user_role WHERE user_id=#{userId}))
+and permission_url=#{requestPath}
+  </select>
+    <select id="isExistPermission" parameterType="java.lang.String" resultType="java.lang.Integer">
+    SELECT count(*) FROM t_sys_permission
+    WHERE  permission_url=#{value}
+  </select>
+    <select id="selectPermissionByUrl" parameterType="java.lang.String" resultType="java.lang.String">
+    SELECT permission_name FROM t_sys_permission
+    WHERE permission_url=#{value}
+  </select>
+    <select id="selectAllPermission" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_sys_permission
+    </select>
+    <select id="isExistRolePermission" parameterType="java.util.List" resultType="Integer">
+        SELECT count(*)
+        FROM t_sys_role_permission rolePer
+        WHERE permission_id in
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </select>
+    <select id="queryPermission" parameterType="PermissionCustom" resultMap="SecondResultMap">
+        SELECT
+        <include refid="Second_Column_List"/>
+        FROM t_sys_permission perm LEFT JOIN t_sys_menu menu ON menu.menu_id=perm.menu_id
+        <where>
+            <include refid="query_permission_where"></include>
+        </where>
+        ORDER BY permission_id desc
+        limit #{pagination.startIndex},#{pagination.pageSize}
+    </select>
+    <select id="queryPermissionCount" parameterType="PermissionCustom"
+            resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM t_sys_permission perm LEFT JOIN t_sys_menu menu ON menu.menu_id=perm.menu_id
+        <where>
+            <include refid="query_permission_where"></include>
+        </where>
+    </select>
+    <delete id="batchDeletePermission" parameterType="java.util.List">
+        delete from t_sys_permission where permission_id in
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </delete>
+</mapper>

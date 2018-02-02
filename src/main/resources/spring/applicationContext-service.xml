@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+    http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<bean id="userService"
+		class="com.rttmall.shopbackend.sys.service.impl.UserServiceImpl"></bean>
+	<bean id="roleService"
+		class="com.rttmall.shopbackend.sys.service.impl.RoleServiceImpl"></bean>
+	<bean id="menuService"
+		class="com.rttmall.shopbackend.sys.service.impl.MenuServiceImpl"></bean>
+	<bean id="permissionService"
+		class="com.rttmall.shopbackend.sys.service.impl.PermissionServiceImpl"></bean>
+	<bean id="sessionService"
+		class="com.rttmall.shopbackend.app.service.impl.SessionServiceImpl"></bean>
+	<bean id="customerService"
+		class="com.rttmall.shopbackend.app.customer.service.impl.CustomerServiceImpl"></bean>
+	<bean id="fundDetailService"
+		class="com.rttmall.shopbackend.app.customer.service.impl.FundDetailServiceImpl"></bean>
+	<bean id="agentService"
+		  class="com.rttmall.shopbackend.app.agent.service.impl.AgentServiceImpl"></bean>
+	<bean id="businessService"
+		  class="com.rttmall.shopbackend.app.agent.service.impl.BusinessServiceImpl"></bean>
+	<bean id="fundService"
+		  class="com.rttmall.shopbackend.app.customer.service.impl.FundServiceImpl"></bean>
+	<bean id="rechargeService"
+		  class="com.rttmall.shopbackend.app.customer.service.impl.RechargeServiceImpl"></bean>
+	<bean id="drawingApplyService"
+		  class="com.rttmall.shopbackend.app.customer.service.impl.DrawingApplyServiceImpl"></bean>
+	<bean id="bankCardService"
+		  class="com.rttmall.shopbackend.app.customer.service.impl.BankCardServiceImpl"></bean>
+	<bean id="agentSettlementService"
+		  class="com.rttmall.shopbackend.app.customer.service.impl.AgentSettlementServiceImpl"></bean>
+	<bean id="settlementService"
+		  class="com.rttmall.shopbackend.app.customer.service.impl.SettlementServiceImpl"></bean>
+	<!-- 验证码服务bean -->
+	<bean id="captchaService"
+		class="com.octo.captcha.service.multitype.GenericManageableCaptchaService">
+		<constructor-arg index="0" ref="imageEngine" />
+		<constructor-arg index="1" value="300" /><!--超时时间 秒 -->
+		<constructor-arg index="2" value="20000" /><!--最大并发数 -->
+	</bean>
+
+	<!-- 验证码图片引擎 -->
+	<bean id="imageEngine" class="com.octo.captcha.engine.GenericCaptchaEngine">
+		<constructor-arg index="0">
+			<list>
+				<ref bean="captchaFactory" />
+			</list>
+		</constructor-arg>
+	</bean>
+
+	<!-- 验证码工厂 -->
+	<bean id="captchaFactory" class="com.octo.captcha.image.gimpy.GimpyFactory">
+		<constructor-arg ref="wordgen" />
+		<constructor-arg ref="wordtoimage" />
+	</bean>
+
+	<!-- 文字产生器 -->
+	<bean id="wordgen"
+		class="com.octo.captcha.component.word.wordgenerator.RandomWordGenerator">
+		<constructor-arg index="0" value="0123456789" />
+	</bean>
+
+	<!-- 图片生成器 -->
+	<bean id="wordtoimage"
+		class="com.octo.captcha.component.image.wordtoimage.ComposedWordToImage">
+		<constructor-arg index="0" ref="fontGenRandom" />
+		<constructor-arg index="1" ref="backGenUni" />
+		<constructor-arg index="2" ref="simpleWhitePaster" />
+	</bean>
+
+	<!-- 文字转换图片 -->
+	<bean id="fontGenRandom"
+		class="com.octo.captcha.component.image.fontgenerator.RandomFontGenerator">
+		<constructor-arg index="0" value="17" /><!--字体最小尺寸 -->
+		<constructor-arg index="1" value="17" /><!--字体最大尺寸 -->
+	</bean>
+
+	<!-- 背景图片 -->
+	<bean id="backGenUni"
+		class="com.octo.captcha.component.image.backgroundgenerator.GradientBackgroundGenerator">
+		<constructor-arg index="0" value="50" /><!--背景图片宽度 -->
+		<constructor-arg index="1" value="25" /><!--背景图片高度 -->
+		<constructor-arg type="java.awt.Color" index="2"
+			ref="colorGrey" />
+		<constructor-arg type="java.awt.Color" index="3"
+			ref="colorGreen" />
+	</bean>
+
+	<bean id="simpleWhitePaster"
+		class="com.octo.captcha.component.image.textpaster.SimpleTextPaster">
+		<constructor-arg type="java.lang.Integer" index="0"
+			value="4" /> <!--字符最少个数 -->
+		<constructor-arg type="java.lang.Integer" index="1"
+			value="4" /> <!--字符最多个数 -->
+		<constructor-arg type="java.awt.Color" index="2"
+			ref="colorFont" />
+	</bean>
+
+	<!-- 颜色组件 -->
+	<bean id="colorGrey" class="java.awt.Color">
+		<constructor-arg type="int" index="0" value="200" />
+		<constructor-arg type="int" index="1" value="255" />
+		<constructor-arg type="int" index="2" value="200" />
+	</bean>
+	<bean id="colorGreen" class="java.awt.Color">
+		<constructor-arg type="int" index="0" value="110" />
+		<constructor-arg type="int" index="1" value="120" />
+		<constructor-arg type="int" index="2" value="200" />
+	</bean>
+	<bean id="colorFont" class="java.awt.Color">
+		<constructor-arg type="int" index="0" value="60" />
+		<constructor-arg type="int" index="1" value="60" />
+		<constructor-arg type="int" index="2" value="60" />
+	</bean>
+</beans>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rttmall.shopbackend.sys.mapper.RoleCustomMapper">
+    <resultMap id="BaseResultMap" type="com.rttmall.shopbackend.sys.pojo.Role">
+        <id column="role_id" jdbcType="INTEGER" property="roleId"/>
+        <result column="role_name" jdbcType="VARCHAR" property="roleName"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    role_id, role_name, description
+  </sql>
+    <select id="selectRolePermissionByRoleId" parameterType="java.lang.Integer" resultType="PermissionCustom">
+        SELECT permission_id as permissionId
+        FROM t_sys_role_permission
+        WHERE role_id=#{roleId}
+    </select>
+    <select id="isExistUserRole" parameterType="java.util.List" resultType="Integer">
+        SELECT count(*) FROM t_sys_user_role WHERE role_id in
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </select>
+    <select id="isExistUpdateRoleName" parameterType="RoleCustom" resultType="Integer">
+        select count(1) from t_sys_role WHERE role_name=#{roleName} AND role_id!=#{roleId}
+    </select>
+    <select id="isExistRoleName" parameterType="String" resultType="Integer">
+        select count(1) from t_sys_role WHERE role_name=#{value}
+    </select>
+    <select id="queryAllRole" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_sys_role
+    </select>
+    <select id="queryRole" parameterType="RoleCustom" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_sys_role
+        ORDER BY role_id desc
+        limit #{pagination.startIndex},#{pagination.pageSize}
+    </select>
+    <select id="queryRoleCount" resultType="java.lang.Integer">
+    SELECT count(1) FROM t_sys_role
+  </select>
+    <delete id="deleteRolePermission" parameterType="java.lang.Integer">
+        delete from t_sys_role_permission
+        where role_id = #{roleId,jdbcType=INTEGER}
+    </delete>
+    <delete id="batchDeleteRolePermission" parameterType="java.util.List">
+        delete from t_sys_role_permission where role_id in
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </delete>
+    <delete id="batchDeleteRole" parameterType="java.util.List">
+        delete from t_sys_role where role_id in
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </delete>
+    <insert id="insertRolePermission" parameterType="java.util.List">
+        insert into t_sys_role_permission (role_id,permission_id) VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            ('${item.roleId}','${item.id}')
+        </foreach>
+    </insert>
+</mapper>

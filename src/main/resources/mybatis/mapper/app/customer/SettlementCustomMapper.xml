@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.rttmall.shopbackend.app.customer.mapper.SettlementCustomMapper">
+	<resultMap id="SettlementResultMap"
+		type="com.rttmall.shopbackend.app.customer.pojo.SettlementCustom">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="daily_trade_number" jdbcType="INTEGER"
+			property="dailyTradeNumber" />
+		<result column="sum_daily_service_charge" jdbcType="DECIMAL"
+			property="sumDailyServiceCharge" />
+		<result column="sum_daily_service_charge_cost" jdbcType="DECIMAL"
+			property="sumDailyServiceChargeCost" />
+		<result column="daily_rebate" jdbcType="DECIMAL" property="dailyRebate" />
+		<result column="status" jdbcType="INTEGER" property="settlementStatusEnum"
+			typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="customer_phone" jdbcType="VARCHAR"
+			property="customer.customerPhone" />
+		<result column="customer_real_name" jdbcType="VARCHAR"
+			property="customer.customerRealName" />
+		<result column="customer_name" jdbcType="VARCHAR" property="customer.customerName" />
+		<result column="business_name" jdbcType="VARCHAR" property="business.businessName" />
+		<result column="agent_name" jdbcType="VARCHAR" property="agent.agentName" />
+		<result column="agent_phone" jdbcType="VARCHAR" property="agent.agentPhone" />
+	</resultMap>
+	<resultMap id="SettlementAgentResultMap"
+		type="com.rttmall.shopbackend.app.customer.pojo.SettlementCustom">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="daily_trade_number" jdbcType="INTEGER"
+			property="dailyTradeNumber" />
+		<result column="sum_daily_service_charge" jdbcType="DECIMAL"
+			property="sumDailyServiceCharge" />
+		<result column="sum_daily_service_charge_cost" jdbcType="DECIMAL"
+			property="sumDailyServiceChargeCost" />
+		<result column="daily_rebate" jdbcType="DECIMAL" property="dailyRebate" />
+		<result column="status" jdbcType="INTEGER" property="settlementStatusEnum"
+			typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="customer_phone" jdbcType="VARCHAR"
+			property="customer.customerPhone" />
+		<result column="customer_real_name" jdbcType="VARCHAR"
+			property="customer.customerRealName" />
+		<result column="customer_name" jdbcType="VARCHAR" property="customer.customerName" />
+	</resultMap>
+
+	<sql id="settlement_where">
+		<if test="agent!=null">
+			<if test="agent.agentPhone!=null and agent.agentPhone!=''">
+				and a.agent_phone =#{agent.agentPhone}
+			</if>
+		</if>
+		<if test="agent!=null">
+			<if test="agent.agentName!=null and agent.agentName!=''">
+				and a.agent_name like concat('%',#{agent.agentName},'%')
+			</if>
+		</if>
+		<if test="business!=null">
+			<if test="business.businessName!=null and business.businessName!=''">
+				and b.business_name like
+				concat('%',#{business.businessName},'%')
+			</if>
+		</if>
+		<if test="customer!=null">
+			<if test="customer.customerPhone!=null and customer.customerPhone!=''">
+				and c.customer_phone =#{customer.customerPhone}
+			</if>
+		</if>
+		<if test="customer!=null">
+			<if
+				test="customer.customerRealName!=null and customer.customerRealName!=''">
+				and c.customer_real_name =#{customer.customerRealName}
+			</if>
+		</if>
+		<if test="customer!=null">
+			<if test="customer.customerName!=null and customer.customerName!=''">
+				and c.customer_name =#{customer.customerName}
+			</if>
+		</if>
+		<if test="startDateTime!=null">
+			and s.create_time &gt;= #{startDateTime}
+		</if>
+		<if test="endDateTime!=null">
+			and s.create_time &lt;= #{endDateTime}
+		</if>
+	</sql>
+
+	<sql id="settlement_business_where">
+		<if test="agent!=null">
+			<if test="agent.agentPhone!=null and agent.agentPhone!=''">
+				and a.agent_phone =#{agent.agentPhone}
+			</if>
+		</if>
+		<if test="agent!=null">
+			<if test="agent.agentName!=null and agent.agentName!=''">
+				and a.agent_name like concat('%',#{agent.agentName},'%')
+			</if>
+		</if>
+		<if test="customer!=null">
+			<if test="customer.customerPhone!=null and customer.customerPhone!=''">
+				and c.customer_phone =#{customer.customerPhone}
+			</if>
+		</if>
+		<if test="customer!=null">
+			<if
+				test="customer.customerRealName!=null and customer.customerRealName!=''">
+				and c.customer_real_name =#{customer.customerRealName}
+			</if>
+		</if>
+		<if test="customer!=null">
+			<if test="customer.customerName!=null and customer.customerName!=''">
+				and c.customer_name =#{customer.customerName}
+			</if>
+		</if>
+		<if test="startDateTime!=null">
+			and s.create_time &gt;= #{startDateTime}
+		</if>
+		<if test="endDateTime!=null">
+			and s.create_time &lt;= #{endDateTime}
+		</if>
+	</sql>
+	<sql id="settlement_agent_where">
+		<if test="customer!=null">
+			<if test="customer.customerPhone!=null and customer.customerPhone!=''">
+				and c.customer_phone =#{customer.customerPhone}
+			</if>
+		</if>
+		<if test="customer!=null">
+			<if
+				test="customer.customerRealName!=null and customer.customerRealName!=''">
+				and c.customer_real_name =#{customer.customerRealName}
+			</if>
+		</if>
+		<if test="customer!=null">
+			<if test="customer.customerName!=null and customer.customerName!=''">
+				and c.customer_name =#{customer.customerName}
+			</if>
+		</if>
+		<if test="startDateTime!=null">
+			and s.create_time &gt;= #{startDateTime}
+		</if>
+		<if test="endDateTime!=null">
+			and s.create_time &lt;= #{endDateTime}
+		</if>
+	</sql>
+	<select id="querySettlement" parameterType="SettlementCustom"
+		resultMap="SettlementResultMap">
+		select
+		s.id, s.create_time, s.daily_trade_number,
+		s.sum_daily_service_charge,
+		s.sum_daily_service_charge_cost,s.daily_rebate, s.status,
+		c.customer_real_name,c.customer_phone,c.customer_name,b.business_name,a.agent_name,a.agent_phone
+		from t_settlement s
+		left join t_customer c on s.customer_id=c.id
+		left
+		join t_business b on b.id=c.business_id
+		left join t_agent a on
+		a.id=c.agent_id
+		<where>
+			<include refid="settlement_where"></include>
+		</where>
+		order by s.id desc
+	</select>
+	<select id="querySettlementBusiness" parameterType="SettlementCustom"
+		resultMap="SettlementResultMap">
+		select
+		s.id, s.create_time, s.daily_trade_number,
+		s.sum_daily_service_charge,
+		s.sum_daily_service_charge_cost,s.daily_rebate, s.status,
+		c.customer_real_name,c.customer_phone,c.customer_name,b.business_name,a.agent_name,a.agent_phone
+		from t_settlement s
+		left join t_customer c on s.customer_id=c.id
+		left join t_agent a on
+		a.id=c.agent_id
+		,t_business b
+		<where>
+			b.id=c.business_id and b.login_id=#{loginId}
+			<include refid="settlement_business_where"></include>
+		</where>
+		order by s.id desc
+	</select>
+	<select id="querySettlementAgent" parameterType="SettlementCustom"
+		resultMap="SettlementResultMap">
+		select
+		s.id, s.create_time, s.daily_trade_number,
+		s.sum_daily_service_charge,
+		s.sum_daily_service_charge_cost,s.daily_rebate, s.status,
+		c.customer_real_name,c.customer_phone,c.customer_name,b.business_name,a.agent_name,a.agent_phone
+		from t_settlement s
+		left join t_customer c on s.customer_id=c.id
+		left join t_business b on
+		b.id=c.business_id
+		,t_agent a
+		<where>
+			a.id=s.agent_id and a.login_id=#{loginId}
+			<include refid="settlement_agent_where"></include>
+		</where>
+		order by s.id desc
+	</select>
+	<select id="querySettlementByAgentId" parameterType="SettlementCustom"
+		resultMap="SettlementAgentResultMap">
+		select
+		s.id, s.create_time, s.daily_trade_number,
+		s.sum_daily_service_charge,
+		s.sum_daily_service_charge_cost,s.daily_rebate, s.status,
+		c.customer_real_name,c.customer_phone,c.customer_name
+		from t_settlement
+		s left join t_customer c on s.customer_id=c.id
+		<where>
+			to_days(s.create_time)=to_days(now()) and c.agent_id =
+			#{loginId}
+		</where>
+		order by s.id desc
+	</select>
+</mapper>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rttmall.shopbackend.app.customer.mapper.FundDetailCustomMapper">
+    <resultMap id="FundDetailResultMap" type="com.rttmall.shopbackend.app.customer.pojo.FundDetailCustom">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="customer_id" jdbcType="INTEGER" property="customerId"/>
+        <result column="flow_way" jdbcType="INTEGER" property="flowWayEnum"
+                typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler"/>
+        <result column="change_amount" jdbcType="DECIMAL" property="changeAmount"/>
+        <result column="charge_amount" jdbcType="DECIMAL" property="chargeAmount"/>
+        <result column="change_time" jdbcType="TIMESTAMP" property="changeTime"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="customer_phone" jdbcType="VARCHAR" property="customer.customerPhone"/>
+        <result column="customer_name" jdbcType="VARCHAR" property="customer.customerName"/>
+        <result column="customer_real_name" jdbcType="VARCHAR" property="customer.customerRealName"/>
+        <result column="business_name" jdbcType="VARCHAR" property="business.businessName"/>
+        <result column="agent_name" jdbcType="VARCHAR" property="agent.agentName"/>
+        <result column="agent_phone" jdbcType="VARCHAR" property="agent.agentPhone"/>
+    </resultMap>
+    <sql id="Fund_Detail_List">
+    	fd.id, fd.customer_id, fd.flow_way, fd.change_amount, fd.charge_amount, fd.change_time, fd.remark,
+        c.customer_phone, c.customer_name, c.customer_real_name,
+        b.business_name,a.agent_name,a.agent_phone
+    </sql>
+    <sql id="fund_detail_where">
+        <if test="customer!=null">
+            <if test="customer.customerPhone!=null and customer.customerPhone!=''">
+                and c.customer_phone =#{customer.customerPhone}
+            </if>
+        </if>
+        <if test="customer!=null">
+            <if test="customer.customerRealName!=null and customer.customerRealName!=''">
+                and c.customer_real_name like concat('%',#{customer.customerRealName},'%')
+            </if>
+        </if>
+        <if test="agent!=null">
+            <if test="agent.agentPhone!=null and agent.agentPhone!=''">
+                and a.agent_phone =#{agent.agentPhone}
+            </if>
+        </if>
+        <if test="agent!=null">
+            <if test="agent.agentName!=null and agent.agentName!=''">
+                and a.agent_name like concat('%',#{agent.agentName},'%')
+            </if>
+        </if>
+        <if test="business!=null">
+            <if test="business.businessName!=null and business.businessName!=''">
+                and b.business_name like concat('%',#{business.businessName},'%')
+            </if>
+        </if>
+        <if test="startDateTime!=null">
+            and fd.change_time &gt;= #{startDateTime}
+        </if>
+        <if test="endDateTime!=null">
+            and fd.change_time &lt;= #{endDateTime}
+        </if>
+    </sql>
+    <select id="queryFundDetail" parameterType="FundDetailCustom" resultMap="FundDetailResultMap">
+	select
+	<include refid="Fund_Detail_List" />
+        from t_fund_detail fd
+        left join t_customer c on c.id=fd.customer_id
+        left join t_business b on b.id=c.business_id
+        left join t_agent a on a.id=c.agent_id
+        <where>
+            <include refid="fund_detail_where"></include>
+        </where>
+        order by fd.id desc
+    </select>
+    <select id="queryFundDetailBusiness" parameterType="FundDetailCustom" resultMap="FundDetailResultMap">
+        select
+        <include refid="Fund_Detail_List" />
+        from t_fund_detail fd
+        left join t_customer c on c.id=fd.customer_id
+        left join t_agent a on a.id=c.agent_id
+        ,t_business b
+        <where>
+            b.id=c.business_id and b.login_id=#{loginId}
+            <include refid="fund_detail_where"></include>
+        </where>
+        order by fd.id desc
+    </select>
+    <select id="queryFundDetailAgent" parameterType="FundDetailCustom" resultMap="FundDetailResultMap">
+        select
+        <include refid="Fund_Detail_List" />
+        from t_fund_detail fd
+        left join t_customer c on c.id=fd.customer_id
+        left join t_business b on b.id=c.business_id
+        ,t_agent a
+        <where>
+            a.id=c.agent_id and a.login_id=#{loginId}
+            <include refid="fund_detail_where"></include>
+        </where>
+        order by fd.id desc
+    </select>
+</mapper>

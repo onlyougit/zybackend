@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.rttmall.shopbackend.app.customer.mapper.CustomerCustomMapper">
+	<resultMap id="CustomerResultMap"
+		type="com.rttmall.shopbackend.app.customer.pojo.CustomerCustom">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="customer_phone" jdbcType="VARCHAR" property="customerPhone" />
+		<result column="customer_name" jdbcType="VARCHAR" property="customerName" />
+		<result column="customer_real_name" jdbcType="VARCHAR"
+			property="customerRealName" />
+		<result column="customer_card_id" jdbcType="VARCHAR" property="customerCardId" />
+		<result column="regist_time" jdbcType="TIMESTAMP" property="registTime" />
+		<result column="status" jdbcType="INTEGER" property="customerStatusEnum"
+			typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="business_name" jdbcType="VARCHAR" property="business.businessName" />
+		<result column="agent_name" jdbcType="VARCHAR" property="agent.agentName" />
+		<result column="agent_phone" jdbcType="VARCHAR" property="agent.agentPhone" />
+	</resultMap>
+	<sql id="Customer_List">
+		c.id, c.customer_phone, c.customer_name, c.customer_real_name,
+		c.regist_time, c.status,c.customer_card_id,
+		b.business_name,a.agent_name,a.agent_phone
+	</sql>
+	<sql id="customer_where">
+		<if test="customerPhone!=null and customerPhone!=''">
+			and c.customer_phone =#{customerPhone}
+		</if>
+		<if test="customerRealName!=null and customerRealName!=''">
+			and c.customer_real_name like concat('%',#{customerRealName},'%')
+		</if>
+		<if test="agent!=null">
+			<if test="agent.agentPhone!=null and agent.agentPhone!=''">
+				and a.agent_phone =#{agent.agentPhone}
+			</if>
+		</if>
+		<if test="agent!=null">
+			<if test="agent.agentName!=null and agent.agentName!=''">
+				and a.agent_name like concat('%',#{agent.agentName},'%')
+			</if>
+		</if>
+		<if test="business!=null">
+			<if test="business.businessName!=null and business.businessName!=''">
+				and b.business_name like concat('%',#{business.businessName},'%')
+			</if>
+		</if>
+		<if test="startDateTime!=null">
+			and c.regist_time &gt;= #{startDateTime}
+		</if>
+		<if test="endDateTime!=null">
+			and c.regist_time &lt;= #{endDateTime}
+		</if>
+	</sql>
+	<select id="queryHeadCustomer" parameterType="CustomerCustom"
+		resultMap="CustomerResultMap">
+		select
+		<include refid="Customer_List" />
+		from t_customer c
+		left join t_business b on b.id=c.business_id
+		left join t_agent a on a.id=c.agent_id
+		<where>
+			<include refid="customer_where"></include>
+		</where>
+		order by c.id desc
+	</select>
+	<select id="queryBusinessCustomer" parameterType="CustomerCustom"
+		resultMap="CustomerResultMap">
+		select
+		<include refid="Customer_List" />
+		from t_customer c
+		left join t_agent a on a.id=c.agent_id
+		,t_business b
+		<where>
+			b.id=c.business_id and b.login_id=#{loginId}
+			<include refid="customer_where"></include>
+		</where>
+		order by c.id desc
+	</select>
+	<select id="queryAgentCustomer" parameterType="CustomerCustom"
+		resultMap="CustomerResultMap">
+		select
+		<include refid="Customer_List" />
+		from t_customer c
+		left join t_business b on b.id=c.business_id
+		,t_agent a
+		<where>
+			a.id=c.agent_id and a.login_id=#{loginId}
+			<include refid="customer_where"></include>
+		</where>
+		order by c.id desc
+	</select>
+	<select id="queryByCustomerPhone" parameterType="java.lang.String"
+		resultType="Customer">
+		select
+		c.id, c.customer_phone customerPhone
+		from t_customer c
+		where c.customer_phone=#{value}
+	</select>
+	<select id="queryByPhoneAndRealName" resultType="Customer">
+		select
+		id
+		from t_customer
+		where customer_phone=#{customerPhone} and
+		customer_real_name=#{customerRealName}
+	</select>
+	<select id="queryByFundId" parameterType="java.lang.Integer"
+		resultType="Customer">
+		select c.id,c.customer_name customerName
+		from t_customer c,t_fund f
+		where f.customer_id=c.id and f.id=#{value}
+	</select>
+</mapper>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.rttmall.shopbackend.app.customer.mapper.DrawingApplyCustomMapper">
+	<resultMap id="DrawingResultMap"
+		type="com.rttmall.shopbackend.app.customer.pojo.DrawingApplyCustom">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="drawing_amount" jdbcType="DECIMAL" property="drawingAmount" />
+		<result column="apply_time" jdbcType="TIMESTAMP" property="applyTime" />
+		<result column="bank" jdbcType="VARCHAR" property="bank" />
+		<result column="bank_card_id" jdbcType="VARCHAR" property="bankCardId" />
+		<result column="operation_time" jdbcType="TIMESTAMP" property="operationTime" />
+		<result column="user_name" jdbcType="VARCHAR" property="userName" />
+		<result column="status" jdbcType="INTEGER" property="drawingApplyStatusEnum"
+			typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="business_name" jdbcType="VARCHAR" property="business.businessName" />
+		<result column="agent_name" jdbcType="VARCHAR" property="agent.agentName" />
+		<result column="agent_phone" jdbcType="VARCHAR" property="agent.agentPhone" />
+		<result column="customer_name" jdbcType="VARCHAR" property="customer.customerName" />
+		<result column="customer_phone" jdbcType="VARCHAR"
+			property="customer.customerPhone" />
+		<result column="customer_real_name" jdbcType="VARCHAR"
+			property="customer.customerRealName" />
+		<result column="customer_id" jdbcType="INTEGER" property="customerId" />
+	</resultMap>
+	<sql id="Drawing_List">
+		da.id, da.customer_id,
+		da.drawing_amount,da.apply_time,da.bank,da.bank_card_id,da.operation_time,da.status,
+		c.customer_phone, c.customer_name, c.customer_real_name,
+		b.business_name,a.agent_name,a.agent_phone,su.user_name
+	</sql>
+	<sql id="drawing_where">
+		<if test="customer!=null">
+			<if test="customer.customerPhone!=null and customer.customerPhone!=''">
+				and c.customer_phone =#{customer.customerPhone}
+			</if>
+		</if>
+		<if test="customer!=null">
+			<if
+				test="customer.customerRealName!=null and customer.customerRealName!=''">
+				and c.customer_real_name like
+				concat('%',#{customer.customerRealName},'%')
+			</if>
+		</if>
+		<if test="agent!=null">
+			<if test="agent.agentPhone!=null and agent.agentPhone!=''">
+				and a.agent_phone =#{agent.agentPhone}
+			</if>
+		</if>
+		<if test="agent!=null">
+			<if test="agent.agentName!=null and agent.agentName!=''">
+				and a.agent_name like concat('%',#{agent.agentName},'%')
+			</if>
+		</if>
+		<if test="business!=null">
+			<if test="business.businessName!=null and business.businessName!=''">
+				and b.business_name like
+				concat('%',#{business.businessName},'%')
+			</if>
+		</if>
+		<if test="startDateTime!=null">
+			and da.apply_time &gt;= #{startDateTime}
+		</if>
+		<if test="endDateTime!=null">
+			and da.apply_time &lt;= #{endDateTime}
+		</if>
+	</sql>
+	<select id="queryDrawing" parameterType="DrawingApplyCustom"
+		resultMap="DrawingResultMap">
+		select
+		<include refid="Drawing_List" />
+		from t_drawing_apply da
+		left join t_customer c on c.id=da.customer_id
+		left join t_business b on b.id=c.business_id
+		left join t_agent a on
+		a.id=c.agent_id
+		left join t_sys_user su on su.user_id=da.operator
+		<where>
+			<include refid="drawing_where"></include>
+		</where>
+		order by da.id desc
+	</select>
+	<select id="queryDrawingBusiness" parameterType="DrawingApplyCustom"
+		resultMap="DrawingResultMap">
+		select
+		<include refid="Drawing_List" />
+		from t_drawing_apply da
+		left join t_customer c on c.id=da.customer_id
+		left join t_agent a on a.id=c.agent_id
+		left join t_sys_user su on
+		su.user_id=da.operator
+		,t_business b
+		<where>
+			b.id=c.business_id and b.login_id=#{loginId}
+			<include refid="drawing_where"></include>
+		</where>
+		order by da.id desc
+	</select>
+	<select id="queryDrawingAgent" parameterType="DrawingApplyCustom"
+		resultMap="DrawingResultMap">
+		select
+		<include refid="Drawing_List" />
+		from t_drawing_apply da
+		left join t_customer c on c.id=da.customer_id
+		left join t_business b on b.id=c.business_id
+		left join t_sys_user su on
+		su.user_id=da.operator
+		,t_agent a
+		<where>
+			a.id=c.agent_id and a.login_id=#{loginId}
+			<include refid="drawing_where"></include>
+		</where>
+		order by da.id desc
+	</select>
+</mapper>

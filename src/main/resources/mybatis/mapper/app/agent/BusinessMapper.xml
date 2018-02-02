@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rttmall.shopbackend.app.agent.mapper.BusinessMapper">
+  <resultMap id="BaseResultMap" type="com.rttmall.shopbackend.app.agent.pojo.Business">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="login_id" jdbcType="INTEGER" property="loginId" />
+    <result column="business_name" jdbcType="VARCHAR" property="businessName" />
+    <result column="service_charge_standard" jdbcType="DECIMAL" property="serviceChargeStandard" />
+    <result column="service_charge_cost" jdbcType="DECIMAL" property="serviceChargeCost" />
+    <result column="bond_standard" jdbcType="INTEGER" property="bondStandard" />
+    <result column="short_name" jdbcType="VARCHAR" property="shortName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, login_id, business_name, service_charge_standard, service_charge_cost, bond_standard, 
+    short_name
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_business
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_business
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.rttmall.shopbackend.app.agent.pojo.Business">
+    insert into t_business (id, login_id, business_name, 
+      service_charge_standard, service_charge_cost, 
+      bond_standard, short_name)
+    values (#{id,jdbcType=INTEGER}, #{loginId,jdbcType=INTEGER}, #{businessName,jdbcType=VARCHAR}, 
+      #{serviceChargeStandard,jdbcType=DECIMAL}, #{serviceChargeCost,jdbcType=DECIMAL}, 
+      #{bondStandard,jdbcType=INTEGER}, #{shortName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.rttmall.shopbackend.app.agent.pojo.Business">
+    insert into t_business
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="loginId != null">
+        login_id,
+      </if>
+      <if test="businessName != null">
+        business_name,
+      </if>
+      <if test="serviceChargeStandard != null">
+        service_charge_standard,
+      </if>
+      <if test="serviceChargeCost != null">
+        service_charge_cost,
+      </if>
+      <if test="bondStandard != null">
+        bond_standard,
+      </if>
+      <if test="shortName != null">
+        short_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="loginId != null">
+        #{loginId,jdbcType=INTEGER},
+      </if>
+      <if test="businessName != null">
+        #{businessName,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceChargeStandard != null">
+        #{serviceChargeStandard,jdbcType=DECIMAL},
+      </if>
+      <if test="serviceChargeCost != null">
+        #{serviceChargeCost,jdbcType=DECIMAL},
+      </if>
+      <if test="bondStandard != null">
+        #{bondStandard,jdbcType=INTEGER},
+      </if>
+      <if test="shortName != null">
+        #{shortName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.rttmall.shopbackend.app.agent.pojo.Business">
+    update t_business
+    <set>
+      <if test="loginId != null">
+        login_id = #{loginId,jdbcType=INTEGER},
+      </if>
+      <if test="businessName != null">
+        business_name = #{businessName,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceChargeStandard != null">
+        service_charge_standard = #{serviceChargeStandard,jdbcType=DECIMAL},
+      </if>
+      <if test="serviceChargeCost != null">
+        service_charge_cost = #{serviceChargeCost,jdbcType=DECIMAL},
+      </if>
+      <if test="bondStandard != null">
+        bond_standard = #{bondStandard,jdbcType=INTEGER},
+      </if>
+      <if test="shortName != null">
+        short_name = #{shortName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.rttmall.shopbackend.app.agent.pojo.Business">
+    update t_business
+    set login_id = #{loginId,jdbcType=INTEGER},
+      business_name = #{businessName,jdbcType=VARCHAR},
+      service_charge_standard = #{serviceChargeStandard,jdbcType=DECIMAL},
+      service_charge_cost = #{serviceChargeCost,jdbcType=DECIMAL},
+      bond_standard = #{bondStandard,jdbcType=INTEGER},
+      short_name = #{shortName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

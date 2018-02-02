@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rttmall.shopbackend.app.customer.mapper.FundCustomMapper">
+	<resultMap id="FundResultMap"
+		type="com.rttmall.shopbackend.app.customer.pojo.FundCustom">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="customer_id" jdbcType="INTEGER" property="customerId" />
+		<result column="balance" jdbcType="DECIMAL" property="balance" />
+		<result column="deposit_balance" jdbcType="DECIMAL" property="depositBalance" />
+		<result column="flush_time" jdbcType="TIMESTAMP" property="flushTime" />
+		<result column="customer_phone" jdbcType="VARCHAR"
+			property="customer.customerPhone" />
+		<result column="customer_name" jdbcType="VARCHAR" property="customer.customerName" />
+		<result column="customer_real_name" jdbcType="VARCHAR"
+			property="customer.customerRealName" />
+		<result column="business_name" jdbcType="VARCHAR" property="business.businessName" />
+		<result column="agent_name" jdbcType="VARCHAR" property="agent.agentName" />
+		<result column="agent_phone" jdbcType="VARCHAR" property="agent.agentPhone" />
+	</resultMap>
+	<sql id="Fund_List">
+		f.id, f.customer_id, f.deposit_balance,
+		f.balance,f.flush_time,
+		c.customer_phone, c.customer_name, c.customer_real_name,
+		b.business_name,a.agent_name,a.agent_phone
+	</sql>
+	<sql id="fund_where">
+		<if test="customer!=null">
+			<if test="customer.customerPhone!=null and customer.customerPhone!=''">
+				and c.customer_phone =#{customer.customerPhone}
+			</if>
+		</if>
+		<if test="customer!=null">
+			<if
+				test="customer.customerRealName!=null and customer.customerRealName!=''">
+				and c.customer_real_name like
+				concat('%',#{customer.customerRealName},'%')
+			</if>
+		</if>
+		<if test="agent!=null">
+			<if test="agent.agentPhone!=null and agent.agentPhone!=''">
+				and a.agent_phone =#{agent.agentPhone}
+			</if>
+		</if>
+		<if test="agent!=null">
+			<if test="agent.agentName!=null and agent.agentName!=''">
+				and a.agent_name like concat('%',#{agent.agentName},'%')
+			</if>
+		</if>
+		<if test="business!=null">
+			<if test="business.businessName!=null and business.businessName!=''">
+				and b.business_name like concat('%',#{business.businessName},'%')
+			</if>
+		</if>
+	</sql>
+	<select id="queryFund" parameterType="FundCustom" resultMap="FundResultMap">
+		select
+		<include refid="Fund_List" />
+		from t_fund f
+		left join t_customer c on c.id=f.customer_id
+		left join t_business b on b.id=c.business_id
+		left join t_agent a on a.id=c.agent_id
+		<where>
+			<include refid="fund_where"></include>
+		</where>
+		order by f.id desc
+	</select>
+	<select id="queryFundBusiness" parameterType="FundCustom"
+		resultMap="FundResultMap">
+		select
+		<include refid="Fund_List" />
+		from t_fund f
+		left join t_customer c on c.id=f.customer_id
+		left join t_agent a on a.id=c.agent_id
+		,t_business b
+		<where>
+			b.id=c.business_id and b.login_id=#{loginId}
+			<include refid="fund_where"></include>
+		</where>
+		order by f.id desc
+	</select>
+	<select id="queryFundAgent" parameterType="FundCustom"
+		resultMap="FundResultMap">
+		select
+		<include refid="Fund_List" />
+		from t_fund f
+		left join t_customer c on c.id=f.customer_id
+		,t_agent a
+		<where>
+			a.id=c.agent_id and a.login_id=#{loginId}
+			<include refid="fund_where"></include>
+		</where>
+		order by f.id desc
+	</select>
+	<select id="queryByCustomerId" parameterType="java.lang.Integer"
+		resultType="Fund">
+		select
+		f.id, f.customer_id customerId, f.balance
+		from t_fund f
+		where customer_id=#{value}
+	</select>
+</mapper>

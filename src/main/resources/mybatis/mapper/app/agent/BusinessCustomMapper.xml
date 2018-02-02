@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rttmall.shopbackend.app.agent.mapper.BusinessCustomMapper">
+  <resultMap id="BaseResultMap" type="com.rttmall.shopbackend.app.agent.pojo.BusinessCustom">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="business_name" jdbcType="VARCHAR" property="businessName" />
+    <result column="service_charge_standard" jdbcType="DECIMAL" property="serviceChargeStandard" />
+    <result column="service_charge_cost" jdbcType="DECIMAL" property="serviceChargeCost" />
+    <result column="bond_standard" jdbcType="INTEGER" property="bondStandard" />
+    <result column="user_name" jdbcType="VARCHAR" property="user.userName" />
+    <result column="short_name" jdbcType="VARCHAR" property="shortName" />
+  </resultMap>
+  <sql id="business_where">
+     <if test="businessName!=null and businessName!=''">
+       and b.business_name like concat('%',#{businessName},'%')
+     </if>
+  </sql>
+  <select id="findAllBusiness" resultType="Business">
+    select 
+    id, business_name businessName
+    from t_business
+  </select>
+  <select id="queryBusiness" parameterType="BusinessCustom" resultMap="BaseResultMap">
+    select
+    b.id, b.business_name, b.service_charge_standard, b.service_charge_cost, b.bond_standard,b.short_name,
+    su.user_name
+    from t_business b
+    left join t_sys_user su on su.user_id=b.login_id
+    <where>
+      <include refid="business_where"></include>
+    </where>
+    order by b.id desc
+  </select>
+  <select id="queryByLoginId"  parameterType="java.lang.Integer" resultType="Business">
+    select
+    id, business_name businessName,service_charge_cost serviceChargeCost,bond_standard bondStandard,short_name shortName
+    from t_business
+    where login_id=#{value}
+  </select>
+</mapper>

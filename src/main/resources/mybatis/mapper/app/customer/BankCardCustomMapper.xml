@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rttmall.shopbackend.app.customer.mapper.BankCardCustomMapper">
+<resultMap id="BankCardResultMap" type="com.rttmall.shopbackend.app.customer.pojo.BankCardCustom">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="bank_name" jdbcType="VARCHAR" property="bankName" />
+    <result column="bank_province" jdbcType="VARCHAR" property="bankProvince" />
+    <result column="bank_city" jdbcType="VARCHAR" property="bankCity" />
+    <result column="bank_address" jdbcType="VARCHAR" property="bankAddress" />
+    <result column="bank_card_id" jdbcType="VARCHAR" property="bankCardId" />
+    <result column="audit_status" jdbcType="INTEGER" property="bankCardStatusEnum" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+    <result column="user_name" jdbcType="INTEGER" property="userName" />
+    <result column="operation_time" jdbcType="TIMESTAMP" property="operationTime" />
+    <result column="customer_name" jdbcType="VARCHAR" property="customer.customerName"/>
+    <result column="customer_phone" jdbcType="VARCHAR" property="customer.customerPhone"/>
+    <result column="customer_real_name" jdbcType="VARCHAR" property="customer.customerRealName"/>
+  </resultMap>
+  <sql id="bankcard_where">
+    <if test="customer!=null">
+      <if test="customer.customerPhone!=null and customer.customerPhone!=''">
+        and c.customer_phone =#{customer.customerPhone}
+      </if>
+    </if>
+    <if test="auditStatus!=null">
+        and bc.audit_status =#{auditStatus}
+    </if>
+  </sql>
+  
+  <select id="queryBankCard" parameterType="BankCardCustom" resultMap="BankCardResultMap">
+    select
+    bc.id, bc.bank_name, bc.bank_province, bc.bank_city, bc.bank_address, bc.bank_card_id,bc.audit_status, bc.operator, bc.operation_time,
+    c.customer_phone, c.customer_name, c.customer_real_name,
+    su.user_name
+    from t_bank_card bc
+    left join t_customer c on c.id=bc.customer_id
+    left join t_sys_user su on su.user_id=bc.operator
+    <where>
+      <include refid="bankcard_where"></include>
+    </where>
+    order by bc.id desc
+  </select>
+  <select id="queryBankCardBusiness" parameterType="BankCardCustom" resultMap="BankCardResultMap">
+    select
+    bc.id, bc.bank_name, bc.bank_province, bc.bank_city, bc.bank_address, bc.bank_card_id,bc.audit_status, bc.operator, bc.operation_time,
+    c.customer_phone, c.customer_name, c.customer_real_name,
+    su.user_name
+    from t_bank_card bc
+    left join t_customer c on c.id=bc.customer_id
+    left join t_sys_user su on su.user_id=bc.operator
+    ,t_business b
+    <where>
+      b.id=c.business_id and b.login_id=#{loginId}
+      <include refid="bankcard_where"></include>
+    </where>
+    order by bc.id desc
+  </select>
+  <select id="queryBankCardAgent" parameterType="BankCardCustom" resultMap="BankCardResultMap">
+    select
+    bc.id, bc.bank_name, bc.bank_province, bc.bank_city, bc.bank_address, bc.bank_card_id,bc.audit_status, bc.operator, bc.operation_time,
+    c.customer_phone, c.customer_name, c.customer_real_name,
+    su.user_name
+    from t_bank_card bc
+    left join t_customer c on c.id=bc.customer_id
+    left join t_sys_user su on su.user_id=bc.operator
+    ,t_agent a
+    <where>
+      a.id=c.agent_id and a.login_id=#{loginId}
+      <include refid="bankcard_where"></include>
+    </where>
+    order by bc.id desc
+  </select>
+  <select id="queryByBankCardId" parameterType="java.lang.String" resultType="BankCard">
+    select 
+    id,  bank_name bankName
+    from t_bank_card
+    where bank_card_id = #{value} and audit_status=1
+  </select>
+</mapper>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rttmall.shopbackend.app.agent.mapper.AgentCustomMapper">
+  <resultMap id="HeadAgentBaseResultMap" type="com.rttmall.shopbackend.app.agent.pojo.AgentCustom">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="agent_name" jdbcType="VARCHAR" property="agentName" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="agent_phone" jdbcType="VARCHAR" property="agentPhone" />
+    <result column="service_charge_standard" jdbcType="DECIMAL" property="serviceChargeStandard" />
+    <result column="service_charge_cost" jdbcType="DECIMAL" property="serviceChargeCost" />
+    <result column="template_account" jdbcType="VARCHAR" property="templateAccount" />
+    <result column="bond_standard" jdbcType="INTEGER" property="bondStandard" />
+    <result column="business_name" jdbcType="VARCHAR" property="business.businessName" />
+    <result column="status" jdbcType="INTEGER" property="agentStatusEnum" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+  </resultMap>
+  <resultMap id="BusinessAgentResultMap" type="com.rttmall.shopbackend.app.agent.pojo.AgentCustom">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="agent_name" jdbcType="VARCHAR" property="agentName" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="agent_phone" jdbcType="VARCHAR" property="agentPhone" />
+    <result column="service_charge_standard" jdbcType="DECIMAL" property="serviceChargeStandard" />
+    <result column="service_charge_cost" jdbcType="DECIMAL" property="serviceChargeCost" />
+    <result column="template_account" jdbcType="VARCHAR" property="templateAccount" />
+    <result column="bond_standard" jdbcType="INTEGER" property="bondStandard" />
+    <result column="status" jdbcType="INTEGER" property="agentStatusEnum" typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+  </resultMap>
+  <sql id="head_agent_where">
+    <if test="business!=null">
+      <if test="business.businessName!=null and business.businessName!=''">
+        and b.business_name like concat('%',#{business.businessName},'%')
+      </if>
+    </if>
+  </sql>
+  <sql id="business_agent_where">
+    <if test="agentName!=null and agentName!=''">
+        and a.agent_name like concat('%',#{agentName},'%')
+    </if>
+    <if test="agentPhone!=null and agentPhone!=''">
+        and a.agent_phone = #{agentPhone}
+    </if>
+  </sql>
+  <select id="queryAgentLinkByLoginId" resultType="com.rttmall.shopbackend.app.agent.pojo.Agent">
+    select
+    id, status
+    from t_agent
+    where login_id=#{value}
+  </select>
+  <select id="findAllAgent" resultType="com.rttmall.shopbackend.app.agent.pojo.Agent">
+    select 
+    id, agent_name agentName
+    from t_agent
+  </select>
+  <select id="queryHeadAgent" parameterType="com.rttmall.shopbackend.app.agent.pojo.AgentCustom" resultMap="HeadAgentBaseResultMap">
+    select
+    a.id, a.business_id, a.agent_name, a.agent_phone, a.service_charge_standard,
+    a.service_charge_cost, a.template_account, a.bond_standard, b.business_name,a.status,
+    su.user_name
+    from t_agent a
+    left join t_business b on b.id=a.business_id
+    left join t_sys_user su on su.user_id=a.login_id
+    <where>
+      <include refid="head_agent_where"></include>
+    </where>
+    order by a.id desc
+  </select>
+  <select id="queryBusinessAgent" parameterType="com.rttmall.shopbackend.app.agent.pojo.AgentCustom" resultMap="BusinessAgentResultMap">
+    select
+    a.id, a.agent_name, a.agent_phone, a.service_charge_standard,
+    a.service_charge_cost, a.template_account, a.bond_standard,a.status,
+    su.user_name
+    from t_agent a
+    left join t_sys_user su on su.user_id=a.login_id
+    , t_business b
+    <where>
+    	b.id=a.business_id and b.login_id=#{loginId}
+      <include refid="business_agent_where"></include>
+    </where>
+    order by a.id desc
+  </select>
+</mapper>
