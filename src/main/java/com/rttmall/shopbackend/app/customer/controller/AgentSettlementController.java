@@ -122,7 +122,7 @@ public class AgentSettlementController {
 
 	/**
 	 * 导出功能抽取
-	 * @param queryParam
+	 * @param agentSettlementCustom
 	 * @param request
 	 * @param response
 	 * @param path
