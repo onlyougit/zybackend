@@ -10,6 +10,7 @@
 		<package name="com.rttmall.shopbackend.sys.pojo" />
 		<package name="com.rttmall.shopbackend.app.customer.pojo" />
 		<package name="com.rttmall.shopbackend.app.agent.pojo" />
+		<package name="com.rttmall.shopbackend.app.other.pojo" />
 		<package name="org.apache.ibatis.type" />
 	</typeAliases>
 	<plugins>

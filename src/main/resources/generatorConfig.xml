@@ -12,19 +12,14 @@
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
                         connectionURL="jdbc:mysql://47.96.18.156:3306/yyy"
                         userId="root" password="admin" />
-        <javaModelGenerator targetPackage="com.rttmall.shopbackend.app.customer.pojo"
+        <javaModelGenerator targetPackage="com.rttmall.shopbackend.app.other.pojo"
                             targetProject="src/main/java" />
-         <sqlMapGenerator targetPackage="com.rttmall.shopbackend.app.customer.mapper"
+         <sqlMapGenerator targetPackage="app.other"
                          targetProject="src/main/resources/mybatis/mapper" />
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.rttmall.shopbackend.app.customer.mapper"
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.rttmall.shopbackend.app.other.mapper"
                              targetProject="src/main/java">
         </javaClientGenerator>
-		<table tableName="t_settlement" domainObjectName="Settlement"
-               enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
-               enableSelectByExample="false" selectByExampleQueryId="false" >
-            <property name="useActualColumnNames" value="false"/>
-        </table>
-		<table tableName="t_agent_settlement" domainObjectName="AgentSettlement"
+		<table tableName="t_notice" domainObjectName="Notice"
                enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false" >
             <property name="useActualColumnNames" value="false"/>

@@ -34,6 +34,8 @@
 		  class="com.rttmall.shopbackend.app.customer.service.impl.AgentSettlementServiceImpl"></bean>
 	<bean id="settlementService"
 		  class="com.rttmall.shopbackend.app.customer.service.impl.SettlementServiceImpl"></bean>
+	<bean id="noticeService"
+		  class="com.rttmall.shopbackend.app.other.service.impl.NoticeServiceImpl"></bean>
 	<!-- 验证码服务bean -->
 	<bean id="captchaService"
 		class="com.octo.captcha.service.multitype.GenericManageableCaptchaService">
