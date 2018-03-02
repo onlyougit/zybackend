@@ -1,5 +1,8 @@
 package com.rttmall.shopbackend.app.other.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 public class Notice {
@@ -12,6 +15,8 @@ public class Notice {
     private Date createTime;
 
     private Integer userId;
+
+    private Integer status;
 
     public Integer getId() {
         return id;
@@ -36,7 +41,8 @@ public class Notice {
     public void setContent(String content) {
         this.content = content;
     }
-
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     public Date getCreateTime() {
         return createTime;
     }
@@ -51,5 +57,13 @@ public class Notice {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }
