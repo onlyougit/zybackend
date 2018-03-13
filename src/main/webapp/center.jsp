@@ -8,6 +8,6 @@
 	<script src="/scripts/boot.js" type="text/javascript"></script>
 </head>
 <body>
-    <h1>欢迎使用一元购系统</h1>
+    <h1>欢迎使用内盘原油期货管理后台系统</h1>
 </body>
 </html>

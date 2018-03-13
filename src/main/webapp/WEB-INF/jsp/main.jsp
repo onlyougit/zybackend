@@ -63,13 +63,15 @@ html, body {
 		style="width: 100%; height: 100%;">
 		<div class="header" region="north" height="70" showSplitIcon="true"
 			showSplit="false" showHeader="false">
-			<img style="border: none; width: 18%;" id="mainTitle"
-				src="/images/logo.JPG" alt="云电商后台系统" />
+			<!--<img style="border: none; width: 18%;" id="mainTitle"
+				src="/images/logo.JPG" alt="云电商后台系统" />-->
+				<h1 style="margin:0;padding:15px;cursor:default;font-family:'Trebuchet MS',Arial,sans-serif;">管理后台系统</h1>
+
 			<div style="position: absolute; top: 6px; right: 10px;">
 				<div
 					style="height: 30px; float: left; text-align: center;margin-right:30px;">
 					<p style="margin-bottom: 5px;">
-						<h5>尊敬的<%=userNm %>用户，欢迎来到云电商后台系统</h5>
+						<h5>尊敬的<%=userNm %>用户，欢迎来到管理后台系统</h5>
 					</p>
 				</div>
 				<a class="mini-button mini-button-iconTop" iconCls="icon-edit"
@@ -82,7 +84,7 @@ html, body {
 		<div title="south" region="south" showSplitIcon="true"
 			showSplit="false" showHeader="false" height="30">
 			<div style="line-height: 28px; text-align: center; cursor: default">Copyright
-				© 厦门金蜂鸟国际贸易有限公司版权所有</div>
+				© 起点科技有限公司版权所有</div>
 		</div>
 		<div showHeader="false" region="west" width="180" maxWidth="250" minWidth="100" >
         <!--OutlookMenu-->
