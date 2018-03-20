@@ -5,7 +5,7 @@
 <head>
     <title>登录页面</title>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-    <link rel="shortcut icon" href="/images/favicon.png" type="image/png"/>
+    <!--<link rel="shortcut icon" href="/images/favicon.png" type="image/png"/>-->
     <link href="/css/demo.css" rel="stylesheet" type="text/css"/>
     <style type="text/css">
         body {

@@ -26,10 +26,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>内盘原油期货管理后台系统</title>
+<title>期货后台管理系统</title>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <script src="/scripts/boot.js" type="text/javascript"></script>
-<link rel="shortcut icon" href="/images/favicon.png" type="image/png" />
+<!--<link rel="shortcut icon" href="/images/favicon.png" type="image/png" />-->
 
 <style type="text/css">
 html, body {
@@ -65,13 +65,13 @@ html, body {
 			showSplit="false" showHeader="false">
 			<!--<img style="border: none; width: 18%;" id="mainTitle"
 				src="/images/logo.JPG" alt="云电商后台系统" />-->
-				<h1 style="margin:0;padding:15px;cursor:default;font-family:'Trebuchet MS',Arial,sans-serif;">管理后台系统</h1>
+				<h1 style="margin:0;padding:15px;cursor:default;font-family:'Trebuchet MS',Arial,sans-serif;">后台管理系统</h1>
 
 			<div style="position: absolute; top: 6px; right: 10px;">
 				<div
 					style="height: 30px; float: left; text-align: center;margin-right:30px;">
 					<p style="margin-bottom: 5px;">
-						<h5>尊敬的<%=userNm %>用户，欢迎来到管理后台系统</h5>
+						<h5>尊敬的<%=userNm %>用户，欢迎来到后台管理系统</h5>
 					</p>
 				</div>
 				<a class="mini-button mini-button-iconTop" iconCls="icon-edit"
