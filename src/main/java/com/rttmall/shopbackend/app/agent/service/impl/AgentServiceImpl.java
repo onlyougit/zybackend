@@ -35,6 +35,8 @@ public class AgentServiceImpl implements AgentService {
 	private String defaultPw;
 	@Value("#{configProperties['agent.extension.link']}")
 	private String agentLink;
+	@Value("#{configProperties['agent.extension.qrcode.link']}")
+	private String agentQrcodeLink;
 
 	@Autowired
 	private AgentCustomMapper agentCustomMapper;
@@ -57,7 +59,10 @@ public class AgentServiceImpl implements AgentService {
 		List<AgentCustom> agentCustomList = agentCustomMapper.queryHeadAgent(agentCustom);
 		agentCustomList.forEach(w->{
 			if(w.getAgentStatusEnum().getCode()==1){
-				w.setAgentExtensionLink(agentLink+w.getId());
+				Integer id = w.getId();
+				w.setAgentExtensionLink(agentLink+id);
+				w.setAgentExtensionQrcodeLink(agentQrcodeLink+id);
+				w.setQrcodeHtml("<div id='qrcode"+id+"'></div>");
 			}
 		});
 		PageBean<AgentCustom> pb = new PageBean(agentCustomList);
@@ -167,12 +172,16 @@ public class AgentServiceImpl implements AgentService {
 	}
 
 	@Override
-	public String queryAgentLink(int userId) {
+	public AgentCustom queryAgentLink(int userId) {
 		Agent agent = agentCustomMapper.queryAgentLinkByLoginId(userId);
+		AgentCustom agentCustom = new AgentCustom();
 		if(agent.getStatus()==1){
-			return agentLink+agent.getId();
+			Integer id =  agent.getId();
+			agentCustom.setAgentExtensionLink(agentLink+id);
+			agentCustom.setAgentExtensionQrcodeLink(agentQrcodeLink+id);
+			return agentCustom;
 		}
-		return "";
+		return agentCustom;
 	}
 
 	@Override

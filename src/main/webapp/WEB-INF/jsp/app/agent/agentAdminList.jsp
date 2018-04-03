@@ -18,6 +18,7 @@
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
     <link href="/css/demo.css" rel="stylesheet" type="text/css"/>
     <script src="/scripts/boot.js" type="text/javascript"></script>
+    <script src="/js/jquery-qrcode.min.js" type="text/javascript"></script>
 </head>
 <body>
 
@@ -38,13 +39,15 @@
 </div>
 <div id="datagrid1" class="mini-datagrid" style="width:99%;height:80%;" sizeList="[20,30,50,100]" pageSize="20"
      url="/agent/queryHeadAgent.action" idField="id" allowResize="true" allowCellWrap="true" 
-     allowCellSelect="true">
+     allowCellSelect="true" onload="onload">
     <div property="columns">
         <div type="indexcolumn"></div>
         <div field="business.businessName" width="120" headerAlign="center" align="center">营业部名称</div>
         <div field="agentName" width="120" headerAlign="center" align="center">代理商名称</div>
 		<div field="agentExtensionLink" width="150" headerAlign="center" align="center">
 		代理推广链接</div>
+		<!--<div field="qrcodeHtml" width="150" headerAlign="center" align="center">
+		二维码推广链接</div>-->
         <div field="agentPhone" width="120" headerAlign="center" align="center">代理电话</div>
 		<div field="userName" width="100" headerAlign="center" align="center">登录账号</div>
         <div field="templateAccount" width="100" headerAlign="center" align="center">模板账户</div>
@@ -104,6 +107,67 @@
 	var addWindow = mini.get("addWindow");
 	var editWindow = mini.get("editWindow");
     grid.load();
+    function onload(e){
+        var rows = grid.findRows(function(row){
+            return true;
+        });
+        /*for(var i = 0; i < rows.length; i++){
+            if(rows[i].agentStatusEnum.code==1){
+                $("#qrcode"+rows[i].id).qrcode({
+                    // render method: 'canvas', 'image' or 'div'
+                    render: 'canvas',
+
+                    // version range somewhere in 1 .. 40
+                    minVersion: 1,
+                    maxVersion: 40,
+
+                    // error correction level: 'L', 'M', 'Q' or 'H'
+                    ecLevel: 'L',
+
+                    // offset in pixel if drawn onto existing canvas
+                    left: 0,
+                    top: 0,
+
+                    // size in pixel
+                    size: 200,
+
+                    // code color or image element
+                    fill: '#000',
+
+                    // background color or image element, null for transparent background
+                    background: null,
+
+                    // content
+                    text: rows[i].agentExtensionQrcodeLink,
+
+                    // corner radius relative to module width: 0.0 .. 0.5
+                    radius: 0,
+
+                    // quiet zone in modules
+                    quiet: 0,
+
+                    // modes
+                    // 0: normal
+                    // 1: label strip
+                    // 2: label box
+                    // 3: image strip
+                    // 4: image box
+                    mode: 0,
+
+                    mSize: 0.1,
+                    mPosX: 0.5,
+                    mPosY: 0.5,
+
+                    label: 'no label',
+                    fontname: 'sans',
+                    fontcolor: '#000',
+
+                    image: null
+                });
+            }
+        }*/
+    }
+
     //查询
     function search() {
         var data = form.getData();      //获取表单多个控件的数据

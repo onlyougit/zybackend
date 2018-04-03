@@ -17,6 +17,27 @@ public class AgentCustom extends Agent {
 
     private String agentExtensionLink;
 
+    private String agentExtensionQrcodeLink;
+
+    private String qrcodeHtml;
+
+
+    public String getQrcodeHtml() {
+        return qrcodeHtml;
+    }
+
+    public void setQrcodeHtml(String qrcodeHtml) {
+        this.qrcodeHtml = qrcodeHtml;
+    }
+
+    public String getAgentExtensionQrcodeLink() {
+        return agentExtensionQrcodeLink;
+    }
+
+    public void setAgentExtensionQrcodeLink(String agentExtensionQrcodeLink) {
+        this.agentExtensionQrcodeLink = agentExtensionQrcodeLink;
+    }
+
     public void setAgentExtensionLink(String agentExtensionLink) {
         this.agentExtensionLink = agentExtensionLink;
     }

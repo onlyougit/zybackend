@@ -26,7 +26,7 @@ public interface AgentService {
 
 	void updateTemplateAccount(Agent agent);
 
-	String queryAgentLink(int userId);
+	AgentCustom queryAgentLink(int userId);
 
 	void updateAgentByBusiness(Agent agent);
 }

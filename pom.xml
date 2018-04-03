@@ -323,13 +323,14 @@
 				<db-url><![CDATA[jdbc:mysql://47.96.18.156:3306/yyy?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true]]></db-url>
 				<db-username>root</db-username>
 				<db-password>admin</db-password>
-				<agent-extension-link>http://47.96.18.156/public/mregister.html?agentId=</agent-extension-link>
+				<agent-extension-link>http://47.96.18.156/register?agentId=</agent-extension-link>
+				<agent-extension-qrcode-link>http://47.96.18.156/public/mregister.html?agentId=</agent-extension-qrcode-link>
 				<log.path>/logs/shopbackend/log.log</log.path>
 				<log4j.rootLogger><![CDATA[info,stdout,D]]></log4j.rootLogger>
 			</properties>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
 			<!-- mvn clean install -Pprod <activation> <activeByDefault>true</activeByDefault> 
 				</activation> -->
 		</profile>
@@ -340,7 +341,8 @@
 				<db-url><![CDATA[jdbc:mysql://116.62.130.69:3306/zy?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true]]></db-url>
 				<db-username>root</db-username>
 				<db-password>Gcb199107230513?</db-password>
-				<agent-extension-link>http://www.qdkj99.com/public/mregister.html?agentId=</agent-extension-link>
+				<agent-extension-link>http://www.qdkj99.com/register?agentId=</agent-extension-link>
+				<agent-extension-qrcode-link>http://www.qdkj99.com/public/mregister.html?agentId=</agent-extension-qrcode-link>
 				<log.path>/logs/shopbackend/log.log</log.path>
 				<log4j.rootLogger><![CDATA[info,D]]></log4j.rootLogger>
 			</properties>

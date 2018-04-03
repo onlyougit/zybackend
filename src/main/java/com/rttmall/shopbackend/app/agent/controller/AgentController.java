@@ -89,7 +89,7 @@ public class AgentController {
 	@RequestMapping(value = "/queryAgentLink")
 	public
 	@ResponseBody
-	String queryAgentLink(HttpSession session) {
+	AgentCustom queryAgentLink(HttpSession session) {
 		int userId = sessionService.getUserId(session);
 		return agentService.queryAgentLink(userId);
 	}

@@ -27,7 +27,7 @@
 	$.ajax({
 		url:'/agent/queryAgentLink.action',
 		success:function(text){
-			$("#link").text(text);
+			$("#link").text(text.agentExtensionLink);
 			$("#qrcode").qrcode({
                     // render method: 'canvas', 'image' or 'div'
                     render: 'canvas',
@@ -53,7 +53,7 @@
                     background: null,
 
                     // content
-                    text: text,
+                    text: text.agentExtensionQrcodeLink,
 
                     // corner radius relative to module width: 0.0 .. 0.5
                     radius: 0,
