@@ -81,7 +81,10 @@
 	<select id="queryFundAgent" parameterType="FundCustom"
 		resultMap="FundResultMap">
 		select
-		<include refid="Fund_List" />
+		f.id, f.customer_id, f.deposit_balance,
+		f.balance,f.flush_time,
+		c.customer_phone, c.customer_name, c.customer_real_name,
+		a.agent_name,a.agent_phone
 		from t_fund f
 		left join t_customer c on c.id=f.customer_id
 		,t_agent a
