@@ -97,14 +97,15 @@ public class DrawingApplyServiceImpl implements DrawingApplyService {
 
 	@Override
 	public void updateDrawingStatus(DrawingApply drawingApply) {
-		drawingApplyMapper.updateByPrimaryKeySelective(drawingApply);
 		if(drawingApply.getStatus()==DrawingApplyStatus.PASS.ordinal()){
 			DrawingApply drawingApply2 = drawingApplyMapper.selectByPrimaryKey(drawingApply.getId());
 			//更新资金余额
 			Fund fund = fundCustomMapper.queryByCustomerId(drawingApply2.getCustomerId());
-			if(fund.getBalance().compareTo(drawingApply2.getDrawingAmount())<=0){
+			if(fund.getBalance().compareTo(drawingApply2.getDrawingAmount())<0){
 				throw new ServiceException(Constants.BALANCE_NOT_ENOUGH);
 			}
+			//更新提款申请表
+			drawingApplyMapper.updateByPrimaryKeySelective(drawingApply);
 			Fund fund2 = new Fund();
 			fund2.setId(fund.getId());
 			fund2.setBalance(fund.getBalance().subtract(drawingApply2.getDrawingAmount()).setScale(2, BigDecimal.ROUND_HALF_UP));
