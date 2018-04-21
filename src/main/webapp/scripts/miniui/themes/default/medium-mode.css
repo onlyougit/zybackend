@@ -232,16 +232,17 @@
 .mini-tree-node-ecicon,
 .mini-tree-indent
 {         
-    height:25px;
+    height:26px;
 }
 .mini-tree-nodeshow
 {
-    padding:2px 4px 1px 3px;
+    padding:1px 3px 1px 2px;
 }
 .mini-tree-node-hover .mini-tree-nodeshow,
 .mini-tree-selectedNode .mini-tree-nodeshow
 {
-    padding:1px 3px 0px 2px;
+    /*padding:1px 3px 0px 2px;*/
+    padding:1px 3px 1px 2px;
 }
 .mini-tree-nodetext
 {
@@ -263,8 +264,8 @@
 }
 body .mini-pager-num
 {
-    height:24px;
-    line-height:24px;
+    height:20px;
+    line-height:20px;
 }
 
 /* toolbar
