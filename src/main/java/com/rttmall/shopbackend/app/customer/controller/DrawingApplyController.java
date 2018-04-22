@@ -237,4 +237,15 @@ public class DrawingApplyController {
 			}
 		}
 	}
+
+	@RequestMapping("/getAllDrawingApplyStatus")
+	public
+	@ResponseBody
+	List getAllDrawingApplyStatus() {
+		List list = new ArrayList<>();
+		for (DrawingApplyStatus e : DrawingApplyStatus.values()) {
+			list.add(e);
+		}
+		return list;
+	}
 }

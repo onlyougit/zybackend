@@ -13,6 +13,7 @@
 		<result column="user_name" jdbcType="VARCHAR" property="userName" />
 		<result column="status" jdbcType="INTEGER" property="drawingApplyStatusEnum"
 			typeHandler="org.apache.ibatis.type.EnumOrdinalTypeHandler" />
+		<result column="remark" jdbcType="VARCHAR" property="remark" />
 		<result column="business_name" jdbcType="VARCHAR" property="business.businessName" />
 		<result column="agent_name" jdbcType="VARCHAR" property="agent.agentName" />
 		<result column="agent_phone" jdbcType="VARCHAR" property="agent.agentPhone" />
@@ -25,8 +26,9 @@
 	</resultMap>
 	<sql id="Drawing_List">
 		da.id, da.customer_id,
-		da.drawing_amount,da.apply_time,da.bank,da.bank_card_id,da.operation_time,da.status,
+		da.drawing_amount,da.apply_time,da.operation_time,da.status,da.remark,
 		c.customer_phone, c.customer_name, c.customer_real_name,
+		CONCAT(bc.bank_name,bc.bank_province,bc.bank_city,bc.bank_address) bank,bc.bank_card_id,
 		b.business_name,a.agent_name,a.agent_phone,su.user_name
 	</sql>
 	<sql id="drawing_where">
@@ -64,6 +66,9 @@
 		<if test="endDateTime!=null">
 			and da.apply_time &lt;= #{endDateTime}
 		</if>
+		<if test="status!=null">
+			and da.status = #{status}
+		</if>
 	</sql>
 	<select id="queryDrawing" parameterType="DrawingApplyCustom"
 		resultMap="DrawingResultMap">
@@ -72,6 +77,7 @@
 		from t_drawing_apply da
 		left join t_customer c on c.id=da.customer_id
 		left join t_business b on b.id=c.business_id
+		left join t_bank_card bc on bc.customer_id=da.customer_id
 		left join t_agent a on
 		a.id=c.agent_id
 		left join t_sys_user su on su.user_id=da.operator
@@ -87,6 +93,7 @@
 		from t_drawing_apply da
 		left join t_customer c on c.id=da.customer_id
 		left join t_agent a on a.id=c.agent_id
+		left join t_bank_card bc on bc.customer_id=da.customer_id
 		left join t_sys_user su on
 		su.user_id=da.operator
 		,t_business b
@@ -103,6 +110,7 @@
 		from t_drawing_apply da
 		left join t_customer c on c.id=da.customer_id
 		left join t_business b on b.id=c.business_id
+		left join t_bank_card bc on bc.customer_id=da.customer_id
 		left join t_sys_user su on
 		su.user_id=da.operator
 		,t_agent a

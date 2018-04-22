@@ -104,8 +104,6 @@ public class DrawingApplyServiceImpl implements DrawingApplyService {
 			if(fund.getBalance().compareTo(drawingApply2.getDrawingAmount())<0){
 				throw new ServiceException(Constants.BALANCE_NOT_ENOUGH);
 			}
-			//更新提款申请表
-			drawingApplyMapper.updateByPrimaryKeySelective(drawingApply);
 			Fund fund2 = new Fund();
 			fund2.setId(fund.getId());
 			fund2.setBalance(fund.getBalance().subtract(drawingApply2.getDrawingAmount()).setScale(2, BigDecimal.ROUND_HALF_UP));
@@ -120,6 +118,8 @@ public class DrawingApplyServiceImpl implements DrawingApplyService {
 			fundDetail.setRemark(FundRemark.DRAWING.getText());
 			fundDetailMapper.insertSelective(fundDetail);
 		}
+		//更新提款申请表
+		drawingApplyMapper.updateByPrimaryKeySelective(drawingApply);
 	}
 
 	@Override

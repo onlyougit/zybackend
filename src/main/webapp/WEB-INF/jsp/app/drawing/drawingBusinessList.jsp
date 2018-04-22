@@ -42,11 +42,23 @@
                 <td>
                     <input name="customer.customerPhone" emptyText="请输入电话号码" class="mini-textbox" onenter="search"/>
                 </td>
+            </tr>
+        </table>
+        <table border="0" cellpadding="1" cellspacing="2">
+            <tr>
                 <td>
                     客户姓名：
                 </td>
                 <td>
                     <input name="customer.customerRealName" emptyText="请输入姓名" class="mini-textbox" onenter="search"/>
+                </td>
+                <td>审核状态：</td>
+                <td>
+                    <input name="status" class="mini-combobox"
+					   style="width: 150px;" onvaluechanged="search()" textField="text"
+					   valueField="code" emptyText="请选择..."
+					   url="/drawing/getAllDrawingApplyStatus.action" showNullItem="true"
+					   nullItemText="请选择..." />
                 </td>
             </tr>
         </table>
@@ -87,7 +99,7 @@
         </table>
     </div>
 </div>
-<div id="datagrid1" class="mini-datagrid" style="width:99%;height:80%;" sizeList="[20,30,50,100]" pageSize="20"
+<div id="datagrid1" class="mini-datagrid" style="width:99%;height:72%;" sizeList="[20,30,50,100]" pageSize="20"
      url="/drawing/queryDrawingBusiness.action" idField="id" allowResize="true" allowCellWrap="true"
      allowCellSelect="true">
     <div property="columns">
@@ -98,9 +110,10 @@
         <div field="customer.customerPhone" width="120" headerAlign="center" align="center">手机号</div>
         <div field="customer.customerRealName" width="120" headerAlign="center" align="center">客户姓名</div>
         <div field="drawingAmount" width="100" headerAlign="center" align="center">提款金额</div>
-        <div field="bank" width="100" headerAlign="center" align="center">银行</div>
-        <div field="bankCardId" width="100" headerAlign="center" align="center">银行卡号</div>
+        <div field="bank" width="250" headerAlign="center" align="center">银行</div>
+        <div field="bankCardId" width="200" headerAlign="center" align="center">银行卡号</div>
         <div field="drawingApplyStatusEnum.text" width="100" headerAlign="center" align="center">状态</div>
+        <div field="remark" width="150" headerAlign="center" align="center">审核意见</div>
         <div field="applyTime" width="150" align="center" headerAlign="center" dateFormat="yyyy-MM-dd HH:mm:ss"
              allowSort="true">申请时间</div>
 		<div field="operationTime" width="150" align="center" headerAlign="center" dateFormat="yyyy-MM-dd HH:mm:ss"
