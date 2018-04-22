@@ -123,6 +123,9 @@
         <div field="bankCardId" width="200" headerAlign="center" align="center">银行卡号</div>
         <div field="drawingApplyStatusEnum.text" width="100" headerAlign="center" align="center">状态</div>
         <div field="remark" width="150" headerAlign="center" align="center">审核意见</div>
+        <div name="action" width="100" headerAlign="center" align="center"
+             renderer="onActionRenderer" cellStyle="padding:0;">操作
+        </div>
         <div field="applyTime" width="150" align="center" headerAlign="center" dateFormat="yyyy-MM-dd HH:mm:ss"
              allowSort="true">申请时间
         </div>
@@ -130,9 +133,6 @@
              allowSort="true">操作时间
         </div>
         <div field="userName" width="150" headerAlign="center" align="center">操作人</div>
-        <div name="action" width="100" headerAlign="center" align="center"
-             renderer="onActionRenderer" cellStyle="padding:0;">操作
-        </div>
     </div>
 </div>
 <script type="text/javascript">
