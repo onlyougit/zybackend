@@ -40,6 +40,10 @@ public class BankCardController {
 	public String findBankcardAdmin() {
 		return "app/bankcard/bankcardAdminList";
 	}
+	@RequestMapping(value = "/findBankcardBusiness")
+	public String finBankcardBusiness() {
+		return "app/bankcard/bankcardBusinessList";
+	}
 	@RequestMapping(value = "/findBankcardAgent")
 	public String finBankcardAgent() {
 		return "app/bankcard/bankcardAgentList";
