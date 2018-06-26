@@ -193,6 +193,7 @@
 						y : "center",
 						timeout : 3000
 					});
+					grid.reload();
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
 					mini.showMessageBox({

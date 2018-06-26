@@ -91,12 +91,37 @@
 				renderer="onActionRenderer" cellStyle="padding:0;">操作</div>
     </div>
 </div>
-
+<div id="editWindow" class="mini-window" title="客户信息修改"
+		style="width: 300px;" showModal="true" allowResize="true"
+		allowDrag="true">
+		<div id="editForm">
+		<input type="hidden" id="customerId" class="mini-hidden">
+			<table border="0" cellpadding="1" cellspacing="2">
+				<tr>
+					<td>客户名称：</td>
+					<td><input style="width: 200px;" id="customerRealName"
+						required="true" emptyText="请输入客户名称" class="mini-textbox" /></td>
+				</tr>
+				<tr>
+					<td>客户身份证：</td>
+					<td><input style="width: 200px;" id="customerCardId"
+						required="true" emptyText="请输入客户身份证" class="mini-textbox" /></td>
+				</tr>
+				<tr>
+					<td colspan="4" align="center">
+						<a class="mini-button" iconCls="icon-save" onClick="editSave()">保存</a>
+						<a class="mini-button" iconCls="icon-close" onClick="editClose()">取消</a>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
 <script type="text/javascript">
 
     mini.parse();
     var grid = mini.get("datagrid1");
     var form = new mini.Form("#form1"); //获取表单对象
+    var editWindow = mini.get("editWindow");
     grid.load();
     //查询
     function search() {
@@ -116,7 +141,21 @@
 				+ record.id+'\',\''+record.customerRealName+'\',\''+record.customerCardId+'\')">编辑</a>';
 		return s;
 	}
-
+function edit(id,customerRealName,customerCardId){
+    	if(customerRealName == null || customerRealName == "null"){
+    		customerRealName = "";
+    	}
+    	if(customerCardId == null || customerCardId == "null"){
+    		customerCardId = "";
+    	}
+    	mini.get("customerRealName").setValue(customerRealName);
+    	mini.get("customerCardId").setValue(customerCardId);
+    	mini.get("customerId").setValue(id);
+    	editWindow.show();
+    }
+    function editClose(){
+    	editWindow.hide();
+    }
     function editSave() {
         var editForm = new mini.Form("#editForm"); //获取表单对象
 		editForm.validate();
@@ -141,6 +180,7 @@
 						y : "center",
 						timeout : 3000
 					});
+					grid.reload();
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
 					mini.showMessageBox({

@@ -196,7 +196,6 @@
 				},
 				success : function(text) {
 					editWindow.hide();
-					grid.reload();
 					mini.showTips({
 						content : "<b>成功</b> <br/>更改成功",
 						state : "success",
@@ -204,6 +203,7 @@
 						y : "center",
 						timeout : 3000
 					});
+					grid.reload();
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
 					mini.showMessageBox({
