@@ -12,4 +12,6 @@ public interface BusinessCustomMapper {
 	List<BusinessCustom> queryBusiness(BusinessCustom businessCustom);
 
 	Business queryByLoginId(Integer loginId);
+
+    int countByShortName(String shortName);
 }

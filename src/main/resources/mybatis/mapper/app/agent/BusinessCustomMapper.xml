@@ -20,6 +20,12 @@
     id, business_name businessName
     from t_business
   </select>
+  <select id="countByShortName"  parameterType="java.lang.String"  resultType="java.lang.Integer">
+  select
+  count(1)
+  from t_business
+    where short_name = #{value}
+</select>
   <select id="queryBusiness" parameterType="BusinessCustom" resultMap="BaseResultMap">
     select
     b.id, b.business_name, b.service_charge_standard, b.service_charge_cost, b.bond_standard,b.short_name,

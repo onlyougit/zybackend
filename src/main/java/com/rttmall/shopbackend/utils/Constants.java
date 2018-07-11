@@ -34,6 +34,7 @@ public class Constants {
 	public static final String MENUNAME_EXIST = "菜单名称已存在";
 	public static final String USING_THIS_MENU = "菜单不能删除";
 	public static final String USING_THIS_PERMISSION = "权限不能删除";
+	public static final String SHORT_NAME_REPEAT = "简称重复";
 
 	// 商品提示信息
 	public static final String STATUS_ATYPISM = "商品状态不一致";

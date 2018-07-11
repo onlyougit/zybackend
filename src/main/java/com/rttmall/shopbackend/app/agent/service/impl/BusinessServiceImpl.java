@@ -61,6 +61,12 @@ public class BusinessServiceImpl implements BusinessService {
 	@Override
 	public void insertBusiness(BusinessCustom businessCustom) {
 		MD5 md5 = new MD5();
+		//判断简称唯一
+		businessCustom.setShortName(businessCustom.getShortName().toUpperCase());
+		int counts = businessCustomMapper.countByShortName(businessCustom.getShortName());
+		if(counts > 0){
+			throw new ServiceException(Constants.SHORT_NAME_REPEAT);
+		}
 		//先生成登入后台用户
 		int count = userCustomMapper.isExistUser(businessCustom.getUserName());
 		if (count != 0) {
