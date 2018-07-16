@@ -40,7 +40,7 @@
                             <input name="agentPhone" class="mini-textbox" required="true"/>
                         </td>
                     </tr>
-                    <tr>
+                    <!--<tr>
                         <td style="width:100px;"> 手续费标准：</td>
                         <td style="width:170px;">
                             <input required="true" id="serviceChargeStandard" name='serviceChargeStandard' format="¥#,0.00"  class='mini-spinner' minValue='0' maxValue='99999'/>
@@ -57,7 +57,7 @@
                         <td style="width:170px;">
                             <input required="true" name='bondStandard' format="¥#,0"  class='mini-spinner' minValue='0' maxValue='99999'/>
                         </td>
-                    </tr>
+                    </tr>-->
                 </table>
             </div>
         </fieldset>

@@ -29,12 +29,12 @@
             <legend>基本信息</legend>
             <div style="padding:5px;">
                 <table style="table-layout:fixed;">
-                    <tr>
+                    <!--<tr>
                         <td style="width:100px;"> 手续费成本：</td>
                         <td style="width:170px;">
                         	<input required="true" name='serviceChargeCost' format="¥#,0.00"  class='mini-spinner' minValue='0' maxValue='99999'/>
                         </td>
-                    </tr>
+                    </tr>-->
                     <tr>
                         <td style="width:100px;">代理商名称：</td>
                         <td style="width:170px;">

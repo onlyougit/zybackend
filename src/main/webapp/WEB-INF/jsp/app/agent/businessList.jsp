@@ -45,8 +45,8 @@
         <div field="businessName" width="120" headerAlign="center" align="center">营业部名称</div>
         <div field="user.userName" width="120" headerAlign="center" align="center">登录账号</div>
         <div field="shortName" width="50" headerAlign="center" align="center">简称</div>
-        <div field="serviceChargeCost" width="100" headerAlign="center" align="center">手续费成本</div>
-		<div field="bondStandard" width="100" headerAlign="center" align="center">保证金标准</div>
+        <!--<div field="serviceChargeCost" width="100" headerAlign="center" align="center">手续费成本</div>
+		<div field="bondStandard" width="100" headerAlign="center" align="center">保证金标准</div>-->
 		<div name="action" width="100" headerAlign="center" align="center"
 				renderer="onActionRenderer" cellStyle="padding:0;">操作</div>
     </div>
@@ -86,8 +86,7 @@
 		var record = e.record;
 		var uid = record.id;
 		var rowIndex = e.rowIndex;
-		var s = '<a class="Edit_Button" href="javascript:edit(\''+ record.id+'\')">编辑</a>&nbsp;'
-			+'<a class="Add_Button" href="javascript:resetPw(\''+ record.id+'\')">重置密码</a>';
+		var s = '<a class="Add_Button" href="javascript:resetPw(\''+ record.id+'\')">重置密码</a>';
 		return s;
 	}
     function edit(id) {

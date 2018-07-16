@@ -40,7 +40,7 @@
                             <input name="businessName" class="mini-textbox" required="true"/>
                         </td>
                     </tr>
-                    <tr>
+                    <!--<tr>
                         <td style="width:100px;"> 手续费成本：</td>
                         <td style="width:170px;">
                             <input required="true" name='serviceChargeCost' format="¥#,0.00"  class='mini-spinner' minValue='0' maxValue='99999'/>
@@ -51,7 +51,7 @@
                         <td style="width:170px;">
                             <input required="true" name='bondStandard' format="¥#,0"  class='mini-spinner' minValue='0' maxValue='99999'/>
                         </td>
-                    </tr>
+                    </tr>-->
                     <tr>
                         <td style="width:100px;"> 简称：</td>
                         <td style="width:170px;">

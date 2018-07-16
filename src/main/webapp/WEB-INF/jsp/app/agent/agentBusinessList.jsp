@@ -50,9 +50,9 @@
         <div field="agentPhone" width="120" headerAlign="center" align="center">代理电话</div>
         <div field="userName" width="100" headerAlign="center" align="center">登录账号</div>
         <div field="templateAccount" width="100" headerAlign="center" align="center">模板账户</div>
-        <div field="serviceChargeStandard" width="100" headerAlign="center" align="center">手续费标准</div>
+        <!--<div field="serviceChargeStandard" width="100" headerAlign="center" align="center">手续费标准</div>
         <div field="serviceChargeCost" width="100" headerAlign="center" align="center">手续费成本</div>
-		<div field="bondStandard" width="100" headerAlign="center" align="center">保证金标准</div>
+		<div field="bondStandard" width="100" headerAlign="center" align="center">保证金标准</div>-->
         <div field="agentStatusEnum.text" width="80" headerAlign="center" align="center">状态</div>
         <div name="action" width="100" headerAlign="center" align="center"
              renderer="onActionRenderer" cellStyle="padding:0;">操作</div>
@@ -93,7 +93,7 @@
     function add() {
         mini.open({
             url: "<c:url value='/agent/addAgentPage.action'/>",
-            title: "代理商添加", width: 350, height: 350,
+            title: "代理商添加", width: 350, height: 200,
             onload: function () {
             },
             ondestroy: function (action) {
@@ -122,7 +122,7 @@
     function edit(id) {
         mini.open({
             url: "<c:url value='/agent/businessEditAgentPage.action'/>",
-            title: "代理商编辑", width: 350, height: 250,
+            title: "代理商编辑", width: 350, height: 200,
             onload: function () {
                 var iframe = this.getIFrameEl();
                 var data = {action: "edit", agentId: id};

@@ -51,9 +51,9 @@
         <div field="agentPhone" width="120" headerAlign="center" align="center">代理电话</div>
 		<div field="userName" width="100" headerAlign="center" align="center">登录账号</div>
         <div field="templateAccount" width="100" headerAlign="center" align="center">模板账户</div>
-        <div field="serviceChargeStandard" width="100" headerAlign="center" align="center">手续费标准</div>
+        <!--<div field="serviceChargeStandard" width="100" headerAlign="center" align="center">手续费标准</div>
         <div field="serviceChargeCost" width="100" headerAlign="center" align="center">手续费成本</div>
-		<div field="bondStandard" width="100" headerAlign="center" align="center">保证金标准</div>
+		<div field="bondStandard" width="100" headerAlign="center" align="center">保证金标准</div>-->
 		<div field="agentStatusEnum.text" width="80" headerAlign="center" align="center">状态</div>
 		<div name="action" width="250" headerAlign="center" align="center"
 				renderer="onActionRenderer" cellStyle="padding:0;">操作</div>
@@ -136,13 +136,11 @@
 		var rowIndex = e.rowIndex;
 		var s;
 		if(record.agentStatusEnum.code==0){
-			s = '<a class="Edit_Button" href="javascript:edit(\''+ record.id+'\')">编辑</a>&nbsp;'
-			+'<a class="Add_Button" href="javascript:addTemplateAccount(\''+ record.id+'\')">添加模板账号</a>&nbsp;'
+			s = '<a class="Add_Button" href="javascript:addTemplateAccount(\''+ record.id+'\')">添加模板账号</a>&nbsp;'
 					+'<a class="Add_Button" href="javascript:updateTemplateAccount(\''+ record.id+'\',\''+record.templateAccount+'\')">修改模板账号</a>&nbsp;'
 			+'<a class="Edit_Button" href="javascript:valid(\''+ record.id+'\')">启用</a>';
 		}else{
-			s = '<a class="Edit_Button" href="javascript:edit(\''+ record.id+'\')">编辑</a>&nbsp;'
-			+'<a class="Add_Button" href="javascript:addTemplateAccount(\''+ record.id+'\')">添加模板账号</a>&nbsp;'
+			s = '<a class="Add_Button" href="javascript:addTemplateAccount(\''+ record.id+'\')">添加模板账号</a>&nbsp;'
 					+'<a class="Add_Button" href="javascript:updateTemplateAccount(\''+ record.id+'\',\''+record.templateAccount+'\')">修改模板账号</a>&nbsp;'
 			+'<a class="Edit_Button" href="javascript:invalid(\''+ record.id+'\')">不启用</a>';
 		}
